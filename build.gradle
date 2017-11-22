@@ -99,3 +99,5 @@ project(":tests") {
 tasks.eclipse.doLast {
     delete ".project"
 }
+
+task stage(dependsOn: [':desktop:clean',':desktop:build'])
