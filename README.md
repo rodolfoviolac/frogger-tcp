@@ -1,3 +1,3 @@
 # frogger-tcp
 
-[![Build Status](https://travis-ci.org/rodolfoviolac/frogger-tcp.svg?branch=master)](https://travis-ci.org/rodolfoviolac/frogger-tcp)
+[![Build Status](https://travis-ci.org/rodolfoviolac/frogger-tcp.svg?branch=master)](https://travis-ci.org/rodolfoviolac/frogger-tcp) [![Maintainability](https://api.codeclimate.com/v1/badges/09bd147bf6566c31136b/maintainability)](https://codeclimate.com/github/rodolfoviolac/frogger-tcp/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/09bd147bf6566c31136b/test_coverage)](https://codeclimate.com/github/rodolfoviolac/frogger-tcp/test_coverage)
