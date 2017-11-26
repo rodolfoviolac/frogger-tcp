@@ -1,0 +1,139 @@
+package screens;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.frogger.game.FroggerGame;
+
+
+public class MainGameScreen implements Screen {
+    public static final float froggerSpeed = 30;
+    Sprite player;
+    float pos0 = Gdx.graphics.getWidth() / 2 - 40;
+    float frogPositionX = player.getX();
+    float frogPositionY = player.getY();
+    float limitRight = Gdx.graphics.getWidth() - 80;
+    float limitLeft = 0;
+    float limitBottom = 0;
+    float limitTop = Gdx.graphics.getHeight() - 80;
+    float position;
+    boolean initial = true;
+
+    FroggerGame game;
+
+    public MainGameScreen(FroggerGame game){
+        this.game = game;
+
+    }
+
+
+    @Override
+    public void show() {
+        player = new Sprite(new Texture("frog.jpg"));
+    }
+
+    @Override
+    public void render(float delta) {
+        float move = froggerSpeed + Gdx.graphics.getDeltaTime();
+        if(initial){
+            player.setX(pos0);
+            player.setY(0);
+            initial = false;
+        }
+        if (frogPositionY == limitBottom) {
+            if (frogPositionX == limitLeft) {
+                position = 1;
+            } else if (frogPositionX == limitRight) {
+                position = 3;
+            } else position = 2;
+        } else if (frogPositionY == limitTop) {
+            position = 7;
+        } else if (frogPositionX == limitLeft) {
+            position = 6;
+        } else if (frogPositionX == limitRight) {
+            position = 4;
+        } else position = 5;
+
+        if (position == 1) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.W)) {
+                player.setY(player.getY() + move);
+            } else if (Gdx.input.isKeyJustPressed(Input.Keys.D)) {
+                player.setX(player.getX() + move);
+            }
+        } else if (position == 2) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.W)) {
+                player.setY(player.getY() + move);
+            } else if (Gdx.input.isKeyJustPressed(Input.Keys.A)) {
+                player.setX(player.getX() - move);
+            } else if (Gdx.input.isKeyJustPressed(Input.Keys.D)) {
+                player.setX(player.getX() + move);
+            }
+        } else if (position == 3) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.W)) {
+                player.setY(player.getY() + move);
+            } else if (Gdx.input.isKeyJustPressed(Input.Keys.A)) {
+                player.setX(player.getX() - move);
+            }
+        } else if (position == 4) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.W)) {
+                player.setY(player.getY() + move);
+            } else if (Gdx.input.isKeyJustPressed(Input.Keys.S)) {
+                player.setY(player.getY() - move);
+            } else if (Gdx.input.isKeyJustPressed(Input.Keys.A)) {
+                player.setX(player.getX() - move);
+            }
+        } else if (position == 5) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.W)) {
+                player.setY(player.getY() + move);
+            } else if (Gdx.input.isKeyJustPressed(Input.Keys.S)) {
+                player.setY(player.getY() - move);
+            } else if (Gdx.input.isKeyJustPressed(Input.Keys.A)) {
+                player.setX(player.getX() - move);
+            } else if (Gdx.input.isKeyJustPressed(Input.Keys.D)) {
+                player.setX(player.getX() + move);
+            }
+        } else if (position == 6) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.W)) {
+                player.setY(player.getY() + move);
+            } else if (Gdx.input.isKeyJustPressed(Input.Keys.S)) {
+                player.setY(player.getY() - move);
+            } else if (Gdx.input.isKeyJustPressed(Input.Keys.D)) {
+                player.setX(player.getX() + move);
+            }
+        }
+        Gdx.gl.glClearColor(1, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        game.batch.begin();
+        game.batch.draw(player, player.getX(), player.getY());
+        game.batch.end();
+
+    }
+
+    @Override
+    public void resize(int width, int height) {
+
+    }
+
+    @Override
+    public void pause() {
+
+    }
+
+    @Override
+    public void resume() {
+
+    }
+
+    @Override
+    public void hide() {
+
+    }
+
+    @Override
+    public void dispose() {
+
+    }
+}
