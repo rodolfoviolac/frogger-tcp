@@ -1,52 +1,35 @@
 package com.frogger.game;
 
-import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
+
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import screens.MainGameScreen;
+import screens.MainMenuScreen;
 
-public class FroggerGame extends ApplicationAdapter {
-	SpriteBatch batch;
-	Sprite player;
+
+public class FroggerGame extends Game {
+	public SpriteBatch batch;
+
+	public static final int screenWidth = 1000;
+	public static final int screenHeight = 700;
 
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		player = new Sprite(new Texture("frog.jpg"));
+		this.setScreen(new MainMenuScreen(this));
 
 
 	}
 
 	@Override
 	public void render () {
-
-		if(Gdx.input.isKeyPressed(Input.Keys.W)){
-		player.setY(player.getY() + 10);
-		}
-		if(Gdx.input.isKeyPressed(Input.Keys.S)){
-		player.setY(player.getY() - 10);
-		}
-		if(Gdx.input.isKeyPressed(Input.Keys.A)){
-		player.setX(player.getX() - 10);
-		}
-		if(Gdx.input.isKeyPressed(Input.Keys.D)){
-		player.setX(player.getX() + 10);
-		}
-
-		Gdx.gl.glClearColor(1, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		batch.begin();
-		batch.draw(player, player.getX(), player.getY());
-		batch.end();
+		super.render();
 	}
 
 	@Override
 	public void dispose () {
 		batch.dispose();
-		player.getTexture().dispose();
 	}
 }

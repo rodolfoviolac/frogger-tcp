@@ -7,6 +7,12 @@ import com.frogger.game.FroggerGame;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+
+		config.title = "Title";
+		//config.useGL20 = true;
+		config.height = FroggerGame.screenHeight;
+		config.width = FroggerGame.screenWidth;
+		config.resizable = false;
 		new LwjglApplication(new FroggerGame(), config);
 	}
 }
