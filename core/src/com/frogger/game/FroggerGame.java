@@ -2,11 +2,8 @@ package com.frogger.game;
 
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import screens.MainGameScreen;
-import screens.MainMenuScreen;
+import com.frogger.game.screens.MainMenuScreen;
 
 
 public class FroggerGame extends Game {
