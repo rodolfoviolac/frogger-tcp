@@ -10,63 +10,84 @@ import com.badlogic.gdx.utils.Disposable;
 import com.frogger.game.sprites.Vehicle;
 
 public class Lane implements Disposable{
-    Vehicle vehicle;
-    public Body b2body;
-    Vehicle vehicles[] = new Vehicle[5];
+    Vehicle vehicles[];
+    private int positionFirstVehicle;
     private int positionLastVehicle;
+    private int rangeOfVehicles;
     private int lastVehicleWidth;
+    private int positionNewVehicle;
     private String typeVehicle;
+    private int vehicleWidth;
+    private final int NUM_OF_VEHICLES = 5;
+    private final int PERCENT_OF_MOTOS = 40;
+    private final int PERCENT_OF_CARS = 40;
+    private int motoRadius;
+    private int carRadius;
+    private int truckRadius;
 
     public Lane(World world, int coord, int velocity, String direction){
-
-        for(int i=0; i<5; i++){
-            if (i == 0){
-                positionLastVehicle = 0;
-                lastVehicleWidth = 0;
+        vehicleWidth = 0;
+        rangeOfVehicles = 0;
+        motoRadius = Vehicle.MOTO_RADIUS;
+        carRadius = Vehicle.CAR_RADIUS;
+        truckRadius = Vehicle.TRUCK_RADIUS;
+        vehicles = new Vehicle[NUM_OF_VEHICLES];
+        for(int i=0; i<NUM_OF_VEHICLES; i++){
+            vehicleWidth = randomVehicleTypes(vehicleWidth);
+            vehiclesPositionsGenerator(i, direction);
+            if (i==NUM_OF_VEHICLES-1){
+                if (direction.equals("right")){
+                    rangeOfVehicles = (positionFirstVehicle - positionNewVehicle);
+                } else rangeOfVehicles = (positionNewVehicle - positionFirstVehicle);
             }
-            int randomPosition = positionLastVehicle + lastVehicleWidth + (int)(Math.random() * Gdx.graphics.getWidth());
-            positionLastVehicle = randomPosition;
+            Vector2 positionVehicle = new Vector2(positionNewVehicle, coord);
+            vehicles[i] = new Vehicle(world, typeVehicle, velocity, positionVehicle, direction, rangeOfVehicles);
+        }
+    }
 
-            int randomTypeVehicle = 1 + (int)(Math.random() * 9);
-            //gera veículos numa proporção de 3 motos para 3 carros para 2 caminhões
-            if (randomTypeVehicle < 4){
-                typeVehicle = "moto";
-                lastVehicleWidth = 24;
-            } else if (randomTypeVehicle < 7){
-                typeVehicle = "car";
-                lastVehicleWidth = 48;
-            } else {
-                typeVehicle = "truck";
-                lastVehicleWidth = 60;
-            }
 
-            Vector2 positionVehicle = new Vector2(randomPosition, coord);
-            vehicles[i] = new Vehicle(world, typeVehicle, 3, positionVehicle, direction);
-           /* Vector2 positionInitial = new Vector2(Gdx.graphics.getWidth() - (i * 48), coord);
-            BodyDef bdef = new BodyDef();
-            bdef.position.set(positionInitial);
-            bdef.type = BodyDef.BodyType.StaticBody;
-            bodies[i] = world.createBody(bdef);
+    private int randomVehicleTypes(int vehicleWidth){
+        lastVehicleWidth = vehicleWidth;
+        int randomTypeVehicle = 1 + (int)(Math.random() * 101);
+        //gera veículos numa proporção de 5 motos para 4 carros para 1 caminhões
+        if (randomTypeVehicle < PERCENT_OF_MOTOS){
+            typeVehicle = "moto";
+            vehicleWidth = motoRadius;
+        } else if (randomTypeVehicle < PERCENT_OF_MOTOS + PERCENT_OF_CARS){
+            typeVehicle = "car";
+            vehicleWidth = carRadius;
+        } else {
+            typeVehicle = "truck";
+            vehicleWidth = truckRadius;
+        }
+        lastVehicleWidth = lastVehicleWidth + vehicleWidth;
+        return vehicleWidth;
+    }
 
-            FixtureDef fdef = new FixtureDef();
-            PolygonShape shape = new PolygonShape();
-            shape.setAsBox(48,24);
-
-            fdef.shape = shape;
-            //fdef.isSensor = true;
-            bodies[i].createFixture(fdef);*/
+    private void vehiclesPositionsGenerator(int i, String direction){
+        int randomPosition = 1 + (int)(Math.random() * (Gdx.graphics.getWidth()*2 - Gdx.graphics.getWidth()/2));
+        if (i == 0){ //o primeiro veículo aparece em alguma posicao dentro da tela
+            positionNewVehicle = randomPosition;
+            positionLastVehicle = positionNewVehicle;
+            positionFirstVehicle = positionNewVehicle;
+        } else if(direction.equals("right")){
+            positionNewVehicle = positionLastVehicle - lastVehicleWidth - randomPosition;
+            positionLastVehicle = positionNewVehicle;
+        } else if(direction.equals("left")){
+            positionNewVehicle = positionLastVehicle + lastVehicleWidth + randomPosition;
+            positionLastVehicle = positionNewVehicle;
         }
     }
 
     public void update(){
-        for(int i=0;i<5;i++){
-            vehicles[i].update(vehicles[i]);
+        for(int i=0;i<NUM_OF_VEHICLES;i++){
+            vehicles[i].update();
         }
     }
 
     @Override
     public void dispose() {
-        for(int i=0;i<5;i++){
+        for(int i=0;i<NUM_OF_VEHICLES;i++){
             vehicles[i].dispose();
         }
     }

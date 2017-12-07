@@ -11,26 +11,27 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class Player {
-    SpriteBatch sb;
-    Viewport viewport;
-    public Stage stage;
-    Label scoreLabel;
-    Label scoreCountLabel;
+    private Viewport viewport = new FitViewport(FroggerGame.V_WIDTH, FroggerGame.V_HEIGHT,new OrthographicCamera());
+    private Stage stage;
 
-    private int score;
+    private Integer score = 0;
+    private Label scoreLabel = new Label("SCORE", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+    private Label scoreCountLabel = new Label(String.format("%06d",score),new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 
     public Player(SpriteBatch sb){
-        score = 0;
-
-        viewport = new FitViewport(FroggerGame.V_WIDTH, FroggerGame.V_HEIGHT,new OrthographicCamera());
         stage = new Stage(viewport, sb);
+    }
 
+    public Stage getStage(){
+        return stage;
+    }
+
+    public void hudPlayer(){
         Table table = new Table();
         table.bottom();
         table.setFillParent(true);
 
-        scoreLabel = new Label("SCORE", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        scoreCountLabel = new Label(String.format("%06d",score),new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        scoreCountLabel.setText(score.toString());
 
         scoreLabel.setFontScale(2);
         scoreCountLabel.setFontScale(2);

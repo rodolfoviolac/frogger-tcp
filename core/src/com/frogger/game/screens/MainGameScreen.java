@@ -38,6 +38,8 @@ public class MainGameScreen implements Screen {
     private Hud hud;
     private StageGame stageGame;
     private Player player;
+    private int FIRST_LEVEL;
+    private int currentLevel;
 
     //Tiled map variables
     private TmxMapLoader maploader;
@@ -64,19 +66,15 @@ public class MainGameScreen implements Screen {
         world = new World(new Vector2(0,0), true);
         b2dr = new Box2DDebugRenderer();
 
-        BodyDef bdef = new BodyDef();
+        /*BodyDef bdef = new BodyDef();
         PolygonShape shape = new PolygonShape();
         FixtureDef fdef = new FixtureDef();
-        Body body;
+        Boy body;*/
 
-        frog = new Frog(world, 3);
-        frog.hudFrog(game.batch);
+        frog = new Frog(world, 3, game.batch, this);
         player = new Player(game.batch);
-        frog.screen = this;
-
-        //vehicle = new Vehicle(world,"car", 2, new Vector2(100, 100));
-
-        stageGame = new StageGame(world, 2);
+        currentLevel = 1;
+        stageGame = new StageGame(world, game.batch, currentLevel);
 
         world.setContactListener(new WorldContactListener(frog));
 
@@ -84,7 +82,9 @@ public class MainGameScreen implements Screen {
 
     public void nextStage(){
         stageGame.dispose();
-        stageGame = new StageGame(world, 5);
+        int nextLevel = currentLevel + 1;
+        currentLevel = nextLevel;
+        stageGame = new StageGame(world, game.batch, nextLevel);
     }
 
 
@@ -96,7 +96,7 @@ public class MainGameScreen implements Screen {
     }
 
     public void update(float dt){
-        frog.handleInput(dt, frog);
+        frog.handlePositionOfFrog(frog);
        // vehicle.update(vehicle);
         stageGame.update();
 
@@ -116,15 +116,16 @@ public class MainGameScreen implements Screen {
         renderer.render();
 
         b2dr.render(world, gamecam.combined);
+        game.batch.setProjectionMatrix(frog.getStage().getCamera().combined);
 
-        game.batch.setProjectionMatrix(frog.stage.getCamera().combined);
-        //hud.stage.draw();
-        frog.hudFrog(game.batch);
-        frog.stage.draw();
-        player = new Player(game.batch);
-        player.stage.draw();
-        stageGame.hudStage(game.batch);
-        stageGame.stage.draw();
+        frog.hudFrog();
+        frog.getStage().draw();
+
+        player.hudPlayer();
+        player.getStage().draw();
+
+        stageGame.hudStage();
+        stageGame.getStage().draw();
 
     }
 
@@ -155,6 +156,6 @@ public class MainGameScreen implements Screen {
         world.dispose();
         b2dr.dispose();
         frog.dispose();
-       // stageGame.dispose();
+        stageGame.dispose();
     }
 }

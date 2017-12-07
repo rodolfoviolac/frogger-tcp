@@ -18,8 +18,6 @@ public class WorldContactListener implements ContactListener {
 
     @Override
     public void beginContact(Contact contact) {
-        //Gdx.app.log("Begin Contact", " hahh");
-        //frog.setPosition(200, 200);
         frog.die(true);
     }
 

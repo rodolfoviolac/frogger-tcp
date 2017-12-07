@@ -20,37 +20,33 @@ import com.frogger.game.FroggerGame;
 import com.frogger.game.screens.MainGameScreen;
 
 public class Frog extends Sprite implements Disposable {
-    public World world;
-    public Body b2body;
-    public MainGameScreen screen;
+    private World world;
+    private Body b2body;
+    private MainGameScreen screen;
 
     private boolean frogDied;
-    public Stage stage;
-    private Viewport viewport;
+    private Viewport viewport = new FitViewport(FroggerGame.V_WIDTH, FroggerGame.V_HEIGHT,new OrthographicCamera());
+    private Stage stage;
 
     private final Vector2 positionInitial = new Vector2(Gdx.graphics.getWidth() / 2,120);
     private final Integer JUMP_SIZE = 48;
     private final Integer SIZE_OF_FROG = 22;
 
-    private float timeCount;
-    private Integer score;
     private Integer lives;
-    private Integer worldTimer;
+    private Label livesCountLabel;
+    private Label livesLabel;
 
-    Label scoreCountLabel;
-    Label scoreLabel;
-    Label timeCountLabel;
-    Label timeLabel;
-    Label livesCountLabel;
-    Label livesLabel;
-
-    public Frog(World world, int lives){
+    public Frog(World world, int lives, SpriteBatch sb, MainGameScreen screen){
+        this.screen = screen;
         this.world = world;
         this.lives = lives;
+        stage = new Stage(viewport, sb);
+        livesCountLabel = new Label(String.format("%01d",lives),new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        livesLabel = new Label("LIVES", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         defineFrog();
     }
 
-    public void defineFrog(){
+    private void defineFrog(){
         BodyDef bdef = new BodyDef();
         bdef.position.set(positionInitial);
         bdef.type = BodyDef.BodyType.DynamicBody;
@@ -65,61 +61,35 @@ public class Frog extends Sprite implements Disposable {
         b2body.createFixture(fdef);
     }
 
-    public void handleInput(float dt, Frog frog){
-        Vector2 currentPosition = new Vector2(frog.b2body.getPosition());
-        if(Gdx.input.isKeyJustPressed((Input.Keys.UP))){
-            if(currentPosition.y < Gdx.graphics.getHeight() - SIZE_OF_FROG) {
-                frog.b2body.setTransform(currentPosition.add(0, JUMP_SIZE), 0);
-            }
-        } else if(Gdx.input.isKeyJustPressed((Input.Keys.DOWN))){
-            if(currentPosition.y > SIZE_OF_FROG) {
-                frog.b2body.setTransform(currentPosition.add(0, -JUMP_SIZE), 0);
-            }
-        } else if(Gdx.input.isKeyJustPressed((Input.Keys.LEFT))){
-            if(currentPosition.x > SIZE_OF_FROG) {
-                frog.b2body.setTransform(currentPosition.add(-JUMP_SIZE, 0), 0);
-            }
-        } else if(Gdx.input.isKeyJustPressed((Input.Keys.RIGHT))){
-            if(currentPosition.x < Gdx.graphics.getWidth() - SIZE_OF_FROG) {
-                frog.b2body.setTransform(currentPosition.add(JUMP_SIZE, 0), 0);
-            }
-        } else if(frogDied){
-            frog.b2body.setTransform(positionInitial, 0);
-            frogDied = false;
-        } else if(Gdx.input.isKeyJustPressed((Input.Keys.W))) screen.nextStage();
-
-
+    public Stage getStage(){
+        return stage;
     }
 
-
-    public void hudFrog(SpriteBatch sb){
-        timeCount = 0;
-        score = 0;
-        worldTimer = 300;
-
-        viewport = new FitViewport(FroggerGame.V_WIDTH, FroggerGame.V_HEIGHT,new OrthographicCamera());
-        stage = new Stage(viewport, sb);
-
-        Table table = new Table();
-        table.bottom();
-        table.setFillParent(true);
-
-        livesLabel = new Label("LIVES", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        livesCountLabel = new Label(String.format("%01d",lives),new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-
-        livesLabel.setFontScale(2);
-        livesCountLabel.setFontScale(2);
-
-        table.add().expandX();
-        table.add(livesLabel).expandX();
-        table.add().expandX();
-        table.row();
-        table.add().expandX().padBottom(10);
-        table.add(livesCountLabel).expandX().padBottom(10);
-        table.add().expandX().padBottom(10);
-
-        stage.addActor(table);
-
+    public void handlePositionOfFrog(Frog frog) {
+        Vector2 currentPosition = new Vector2(frog.b2body.getPosition());
+        if (Gdx.input.isKeyJustPressed((Input.Keys.UP))) {
+            if (currentPosition.y == Gdx.graphics.getHeight() - (JUMP_SIZE / 2)) {
+                frog.b2body.setTransform(positionInitial, 0);
+                screen.nextStage();
+            } else if (currentPosition.y < Gdx.graphics.getHeight() - SIZE_OF_FROG - 2) {
+                frog.b2body.setTransform(currentPosition.add(0, JUMP_SIZE), 0);
+            }
+        } else if (Gdx.input.isKeyJustPressed((Input.Keys.DOWN))) {
+            if (currentPosition.y > SIZE_OF_FROG + 2) {
+                frog.b2body.setTransform(currentPosition.add(0, -JUMP_SIZE), 0);
+            }
+        } else if (Gdx.input.isKeyJustPressed((Input.Keys.LEFT))) {
+            if (currentPosition.x > SIZE_OF_FROG + 2) {
+                frog.b2body.setTransform(currentPosition.add(-JUMP_SIZE, 0), 0);
+            }
+        } else if (Gdx.input.isKeyJustPressed((Input.Keys.RIGHT))) {
+            if (currentPosition.x < Gdx.graphics.getWidth() - SIZE_OF_FROG - 2) {
+                frog.b2body.setTransform(currentPosition.add(JUMP_SIZE, 0), 0);
+            }
+        } else if(frogDied) {
+            frog.b2body.setTransform(positionInitial, 0);
+            frogDied = false;
+        } else if (Gdx.input.isKeyJustPressed((Input.Keys.W))) screen.nextStage();
     }
 
     public void die(boolean frogDied) {
@@ -127,6 +97,30 @@ public class Frog extends Sprite implements Disposable {
         lives = lives - 1;
         Gdx.app.log("Morreu", "...");
     }
+
+    public void hudFrog(){
+        Table table = new Table();
+        table.bottom();
+        table.setFillParent(true);
+
+        livesCountLabel.setText(lives.toString());
+
+        //aumenta tamanho da fonte
+        livesLabel.setFontScale(2);
+        livesCountLabel.setFontScale(2);
+
+        table.add().expandX();
+        table.add().expandX();
+        table.add(livesLabel).expandX();
+        table.row();
+        table.add().expandX().padBottom(10);
+        table.add().expandX().padBottom(10);
+        table.add(livesCountLabel).expandX().padBottom(10);
+
+        stage.addActor(table);
+    }
+
+
 
     @Override
     public void dispose() {
