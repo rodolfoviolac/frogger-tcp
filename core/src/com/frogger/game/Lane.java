@@ -11,9 +11,10 @@ import com.frogger.game.sprites.Vehicle;
 
 public class Lane implements Disposable{
     Vehicle vehicles[];
+    private int firstVehicleWidth;
     private int positionFirstVehicle;
     private int positionLastVehicle;
-    private int rangeOfVehicles;
+    public int rangeOfVehicles;
     private int lastVehicleWidth;
     private int positionNewVehicle;
     private String typeVehicle;
@@ -28,6 +29,7 @@ public class Lane implements Disposable{
     public Lane(World world, int coord, int velocity, String direction){
         vehicleWidth = 0;
         rangeOfVehicles = 0;
+        firstVehicleWidth = 0;
         motoRadius = Vehicle.MOTO_RADIUS;
         carRadius = Vehicle.CAR_RADIUS;
         truckRadius = Vehicle.TRUCK_RADIUS;
@@ -37,8 +39,10 @@ public class Lane implements Disposable{
             vehiclesPositionsGenerator(i, direction);
             if (i==NUM_OF_VEHICLES-1){
                 if (direction.equals("right")){
-                    rangeOfVehicles = (positionFirstVehicle - positionNewVehicle);
-                } else rangeOfVehicles = (positionNewVehicle - positionFirstVehicle);
+                    //o cálculo abaixo está correto. Porém rangeOfVehicles não está chegando no update() em Vehicle
+                    rangeOfVehicles = (positionFirstVehicle - positionNewVehicle) + (firstVehicleWidth + vehicleWidth);
+                    //rangeOfVehicles = 600; <--- foi só um teste
+                } else rangeOfVehicles = (positionNewVehicle - positionFirstVehicle) + (firstVehicleWidth + vehicleWidth);
             }
             Vector2 positionVehicle = new Vector2(positionNewVehicle, coord);
             vehicles[i] = new Vehicle(world, typeVehicle, velocity, positionVehicle, direction, rangeOfVehicles);
@@ -70,6 +74,7 @@ public class Lane implements Disposable{
             positionNewVehicle = randomPosition;
             positionLastVehicle = positionNewVehicle;
             positionFirstVehicle = positionNewVehicle;
+            firstVehicleWidth = vehicleWidth;
         } else if(direction.equals("right")){
             positionNewVehicle = positionLastVehicle - lastVehicleWidth - randomPosition;
             positionLastVehicle = positionNewVehicle;

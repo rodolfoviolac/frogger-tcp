@@ -20,7 +20,7 @@ public class Vehicle extends Sprite implements Disposable{
     private int vehicleWitdh;
     private int velocityOfVehicle;
     private int velocityOfVehicleToDirection;
-    private int rangeOfVehicles;
+    public int rangeOfVehicles;
     private String vehicleDirection;
 
 
@@ -64,12 +64,13 @@ public class Vehicle extends Sprite implements Disposable{
     public void update(){
         if (vehicleDirection.equals("right")){
             if (b2body.getPosition().x == Gdx.graphics.getWidth() + vehicleWitdh){
-                this.b2body.setTransform(new Vector2(b2body.getPosition().x - rangeOfVehicles, b2body.getPosition().y), 0);
+                //rangeOfVehicles tá chegando sempre zero, pq???
+                this.b2body.setTransform(new Vector2(this.b2body.getPosition().x - (rangeOfVehicles + vehicleWitdh + 120), b2body.getPosition().y), 0);
                 Gdx.app.log("dir", "");
             }
         } else if (b2body.getPosition().x == 2*(-1)*vehicleWitdh){
             Gdx.app.log("esq", "");
-            this.b2body.setTransform(new Vector2(b2body.getPosition().x + rangeOfVehicles, b2body.getPosition().y), 0);
+            this.b2body.setTransform(new Vector2(this.b2body.getPosition().x + rangeOfVehicles + vehicleWitdh + 120, b2body.getPosition().y), 0);
         }
         this.b2body.setTransform(this.b2body.getPosition().add(velocityOfVehicleToDirection, 0),0);
     }
