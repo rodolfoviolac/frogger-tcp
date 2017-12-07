@@ -28,7 +28,6 @@ public class Lane implements Disposable{
 
     public Lane(World world, int coord, int velocity, String direction){
         vehicleWidth = 0;
-        rangeOfVehicles = 0;
         firstVehicleWidth = 0;
         motoRadius = Vehicle.MOTO_RADIUS;
         carRadius = Vehicle.CAR_RADIUS;
@@ -37,12 +36,16 @@ public class Lane implements Disposable{
         for(int i=0; i<NUM_OF_VEHICLES; i++){
             vehicleWidth = randomVehicleTypes(vehicleWidth);
             vehiclesPositionsGenerator(i, direction);
-            if (i==NUM_OF_VEHICLES-1){
+            if (i == NUM_OF_VEHICLES - 1){
                 if (direction.equals("right")){
                     //o cálculo abaixo está correto. Porém rangeOfVehicles não está chegando no update() em Vehicle
                     rangeOfVehicles = (positionFirstVehicle - positionNewVehicle) + (firstVehicleWidth + vehicleWidth);
+                    Gdx.app.log("right: ", String.valueOf(rangeOfVehicles));
                     //rangeOfVehicles = 600; <--- foi só um teste
-                } else rangeOfVehicles = (positionNewVehicle - positionFirstVehicle) + (firstVehicleWidth + vehicleWidth);
+                } else {
+                    rangeOfVehicles = (positionNewVehicle - positionFirstVehicle) + (firstVehicleWidth + vehicleWidth);
+                    Gdx.app.log("left: ", String.valueOf(rangeOfVehicles));
+                }
             }
             Vector2 positionVehicle = new Vector2(positionNewVehicle, coord);
             vehicles[i] = new Vehicle(world, typeVehicle, velocity, positionVehicle, direction, rangeOfVehicles);
