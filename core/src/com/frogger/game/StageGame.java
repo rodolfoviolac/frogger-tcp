@@ -21,7 +21,8 @@ public class StageGame implements Disposable {
     private int IS_LANE[] = {3, 4, 5, 6, 7, 9, 10, 11, 12, 13};
     private int LANE_RADIUS = 24;
     private int DISTANCE_OF_LANES = 48;
-    private Integer timeCount;
+    private float timeCount;
+    private int stageTimer;
     private Label timeLabel;
     private Label timeCountLabel;
     private Viewport viewport;
@@ -32,8 +33,9 @@ public class StageGame implements Disposable {
         stage = new Stage(viewport, sb);
         lanes = new Lane[NUM_OF_LANES];
         timeCount = 0;
+        stageTimer = 50;
         timeLabel = new Label("TIME", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        timeCountLabel = new Label(String.format("%01d", timeCount), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        timeCountLabel = new Label(String.format("%02d", stageTimer), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         sortDirectionLanes(world, level);
     }
 
@@ -41,9 +43,15 @@ public class StageGame implements Disposable {
         return stage;
     }
 
-    public void update() {
+    public void update(float dt) {
         for (int i : IS_LANE) {
             lanes[i].update();
+        }
+        timeCount += dt;
+        if(timeCount >= 1){
+            stageTimer--;
+            timeCountLabel.setText(String.format("%02d", stageTimer));
+            timeCount = 0;
         }
     }
 
@@ -52,7 +60,7 @@ public class StageGame implements Disposable {
         table.bottom();
         table.setFillParent(true);
 
-        timeCountLabel.setText(timeCount.toString());
+        timeCountLabel.setText(String.format("%02d", stageTimer));
 
         //aumenta tamanho da fonte
         timeLabel.setFontScale(2);

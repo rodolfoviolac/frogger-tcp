@@ -39,10 +39,8 @@ public class Lane implements Disposable{
             vehiclesPositionsGenerator(i, direction);
             if (i == NUM_OF_VEHICLES - 1){
                 if (direction.equals("right")){
-                    //o cálculo abaixo está correto. Porém rangeOfVehicles não está chegando no update() em Vehicle
                     rangeOfVehicles = (positionFirstVehicle - positionNewVehicle);
                     Gdx.app.log("right: ", String.valueOf(rangeOfVehicles));
-                    //rangeOfVehicles = 600; <--- foi só um teste
                 } else {
                     rangeOfVehicles = (positionNewVehicle - positionFirstVehicle);
                     Gdx.app.log("left: ", String.valueOf(rangeOfVehicles));
@@ -57,7 +55,7 @@ public class Lane implements Disposable{
     private int randomVehicleTypes(int vehicleWidth){
         lastVehicleWidth = vehicleWidth;
         int randomTypeVehicle = 1 + (int)(Math.random() * 101);
-        //gera veículos numa proporção de 5 motos para 4 carros para 1 caminhões
+        //gera veículos numa frequencia de 40% motos, 40% carros e 20% caminhoes
         if (randomTypeVehicle < PERCENT_OF_MOTOS){
             typeVehicle = "moto";
             vehicleWidth = motoRadius;

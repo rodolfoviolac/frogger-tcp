@@ -98,7 +98,7 @@ public class MainGameScreen implements Screen {
     public void update(float dt){
         frog.handlePositionOfFrog(frog);
        // vehicle.update(vehicle);
-        stageGame.update();
+        stageGame.update(dt);
 
         world.step(1/60f, 6, 2);
 
