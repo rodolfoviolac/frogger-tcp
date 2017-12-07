@@ -27,6 +27,7 @@ public class Vehicle extends Sprite implements Disposable{
     public Vehicle(World world, String type, int velocity, Vector2 position, String direction, int rangeOfVehicles){
         this.world = world;
         this.rangeOfVehicles = rangeOfVehicles;
+        Gdx.app.log("range", String.valueOf(this.rangeOfVehicles));
         vehicleDirection = direction;
         bdef.position.set(position);
         bdef.type = BodyDef.BodyType.StaticBody;
@@ -61,16 +62,13 @@ public class Vehicle extends Sprite implements Disposable{
         b2body.createFixture(fdef);
     }
 
-    public void update(){
+    public void update(int rangeOfVehicles, int timeOfReposition){
         if (vehicleDirection.equals("right")){
-            if (b2body.getPosition().x == Gdx.graphics.getWidth() + vehicleWitdh){
-                //rangeOfVehicles tá chegando sempre zero, pq???
-                this.b2body.setTransform(new Vector2(this.b2body.getPosition().x - (this.rangeOfVehicles + vehicleWitdh + 120), b2body.getPosition().y), 0);
-                Gdx.app.log("dir", "");
+            if (b2body.getPosition().x >= Gdx.graphics.getWidth() + timeOfReposition){
+                this.b2body.setTransform(new Vector2(Gdx.graphics.getWidth() - rangeOfVehicles - 144, b2body.getPosition().y), 0);
             }
-        } else if (b2body.getPosition().x == 2*(-1)*vehicleWitdh){
-            Gdx.app.log("esq", "");
-            this.b2body.setTransform(new Vector2(this.b2body.getPosition().x + this.rangeOfVehicles + vehicleWitdh + 120, b2body.getPosition().y), 0);
+        } else if (b2body.getPosition().x <= -timeOfReposition){
+            this.b2body.setTransform(new Vector2(rangeOfVehicles + 144, b2body.getPosition().y), 0);
         }
         this.b2body.setTransform(this.b2body.getPosition().add(velocityOfVehicleToDirection, 0),0);
     }

@@ -22,6 +22,7 @@ public class Lane implements Disposable{
     private final int NUM_OF_VEHICLES = 5;
     private final int PERCENT_OF_MOTOS = 40;
     private final int PERCENT_OF_CARS = 40;
+    private final int TIME_OF_REPOSITION = 200;
     private int motoRadius;
     private int carRadius;
     private int truckRadius;
@@ -39,11 +40,11 @@ public class Lane implements Disposable{
             if (i == NUM_OF_VEHICLES - 1){
                 if (direction.equals("right")){
                     //o cálculo abaixo está correto. Porém rangeOfVehicles não está chegando no update() em Vehicle
-                    rangeOfVehicles = (positionFirstVehicle - positionNewVehicle) + (firstVehicleWidth + vehicleWidth);
+                    rangeOfVehicles = (positionFirstVehicle - positionNewVehicle);
                     Gdx.app.log("right: ", String.valueOf(rangeOfVehicles));
                     //rangeOfVehicles = 600; <--- foi só um teste
                 } else {
-                    rangeOfVehicles = (positionNewVehicle - positionFirstVehicle) + (firstVehicleWidth + vehicleWidth);
+                    rangeOfVehicles = (positionNewVehicle - positionFirstVehicle);
                     Gdx.app.log("left: ", String.valueOf(rangeOfVehicles));
                 }
             }
@@ -72,7 +73,7 @@ public class Lane implements Disposable{
     }
 
     private void vehiclesPositionsGenerator(int i, String direction){
-        int randomPosition = 1 + (int)(Math.random() * (Gdx.graphics.getWidth()*2 - Gdx.graphics.getWidth()/2));
+        int randomPosition = 1 + (int)(Math.random() * 500);
         if (i == 0){ //o primeiro veículo aparece em alguma posicao dentro da tela
             positionNewVehicle = randomPosition;
             positionLastVehicle = positionNewVehicle;
@@ -89,7 +90,7 @@ public class Lane implements Disposable{
 
     public void update(){
         for(int i=0;i<NUM_OF_VEHICLES;i++){
-            vehicles[i].update();
+            vehicles[i].update(rangeOfVehicles, TIME_OF_REPOSITION);
         }
     }
 
