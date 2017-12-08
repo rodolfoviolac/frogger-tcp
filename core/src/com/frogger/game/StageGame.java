@@ -22,13 +22,15 @@ public class StageGame implements Disposable {
     private int LANE_RADIUS = 24;
     private int DISTANCE_OF_LANES = 48;
     private float timeCount;
-    private int stageTimer;
+    private Integer stageTimer;
+    private int level;
     private Label timeLabel;
     private Label timeCountLabel;
     private Viewport viewport;
     private Stage stage;
 
     public StageGame(World world, SpriteBatch sb, int level) {
+        this.level = level;
         viewport = new FitViewport(FroggerGame.V_WIDTH, FroggerGame.V_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, sb);
         lanes = new Lane[NUM_OF_LANES];
@@ -53,6 +55,14 @@ public class StageGame implements Disposable {
             timeCountLabel.setText(String.format("%02d", stageTimer));
             timeCount = 0;
         }
+    }
+
+    public int getStageTimer(){
+        return stageTimer;
+    }
+
+    public int getLevel(){
+        return level;
     }
 
     public void hudStage() {

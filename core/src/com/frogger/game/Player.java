@@ -11,15 +11,19 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class Player {
-    private Viewport viewport = new FitViewport(FroggerGame.V_WIDTH, FroggerGame.V_HEIGHT,new OrthographicCamera());
+    private Viewport viewport;
     private Stage stage;
 
-    private Integer score = 0;
-    private Label scoreLabel = new Label("SCORE", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-    private Label scoreCountLabel = new Label(String.format("%06d",score),new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+    private Integer score;
+    private Label scoreLabel;
+    private Label scoreCountLabel;
 
     public Player(SpriteBatch sb){
+        score = 0;
+        viewport = new FitViewport(FroggerGame.V_WIDTH, FroggerGame.V_HEIGHT,new OrthographicCamera());
         stage = new Stage(viewport, sb);
+        scoreLabel = new Label("SCORE", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        scoreCountLabel = new Label(String.format("%06d",score),new Label.LabelStyle(new BitmapFont(), Color.WHITE));
     }
 
     public Stage getStage(){
@@ -51,7 +55,7 @@ public class Player {
         return score;
     }
 
-    public void setScore(int scoreOnStage){
-        score = score + scoreOnStage;
+    public void setScore(int stageTimer, int level){
+        score = score + (stageTimer * level);
     }
 }

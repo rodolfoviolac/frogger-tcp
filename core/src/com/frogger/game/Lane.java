@@ -40,10 +40,8 @@ public class Lane implements Disposable{
             if (i == NUM_OF_VEHICLES - 1){
                 if (direction.equals("right")){
                     rangeOfVehicles = (positionFirstVehicle - positionNewVehicle);
-                    Gdx.app.log("right: ", String.valueOf(rangeOfVehicles));
                 } else {
                     rangeOfVehicles = (positionNewVehicle - positionFirstVehicle);
-                    Gdx.app.log("left: ", String.valueOf(rangeOfVehicles));
                 }
             }
             Vector2 positionVehicle = new Vector2(positionNewVehicle, coord);

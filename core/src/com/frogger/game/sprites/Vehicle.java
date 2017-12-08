@@ -27,7 +27,6 @@ public class Vehicle extends Sprite implements Disposable{
     public Vehicle(World world, String type, int velocity, Vector2 position, String direction, int rangeOfVehicles){
         this.world = world;
         this.rangeOfVehicles = rangeOfVehicles;
-        Gdx.app.log("range", String.valueOf(this.rangeOfVehicles));
         vehicleDirection = direction;
         bdef.position.set(position);
         bdef.type = BodyDef.BodyType.StaticBody;

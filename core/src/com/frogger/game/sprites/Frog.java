@@ -17,6 +17,8 @@ import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.frogger.game.FroggerGame;
+import com.frogger.game.Player;
+import com.frogger.game.StageGame;
 import com.frogger.game.screens.MainGameScreen;
 
 public class Frog extends Sprite implements Disposable {
@@ -25,10 +27,10 @@ public class Frog extends Sprite implements Disposable {
     private MainGameScreen screen;
 
     private boolean frogDied;
-    private Viewport viewport = new FitViewport(FroggerGame.V_WIDTH, FroggerGame.V_HEIGHT,new OrthographicCamera());
+    private Viewport viewport;
     private Stage stage;
 
-    private final Vector2 positionInitial = new Vector2(Gdx.graphics.getWidth() / 2,120);
+    private final Vector2 positionInitial;
     private final Integer JUMP_SIZE = 48;
     private final Integer SIZE_OF_FROG = 22;
 
@@ -40,7 +42,9 @@ public class Frog extends Sprite implements Disposable {
         this.screen = screen;
         this.world = world;
         this.lives = lives;
+        viewport = new FitViewport(FroggerGame.V_WIDTH, FroggerGame.V_HEIGHT,new OrthographicCamera());
         stage = new Stage(viewport, sb);
+        positionInitial = new Vector2(Gdx.graphics.getWidth() / 2,120);
         livesCountLabel = new Label(String.format("%01d",lives),new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         livesLabel = new Label("LIVES", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         defineFrog();
@@ -89,7 +93,9 @@ public class Frog extends Sprite implements Disposable {
         } else if(frogDied) {
             frog.b2body.setTransform(positionInitial, 0);
             frogDied = false;
-        } else if (Gdx.input.isKeyJustPressed((Input.Keys.W))) screen.nextStage();
+        } else if (Gdx.input.isKeyJustPressed((Input.Keys.W))){
+            screen.nextStage();
+        }
     }
 
     public void die(boolean frogDied) {

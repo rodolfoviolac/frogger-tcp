@@ -38,7 +38,6 @@ public class MainGameScreen implements Screen {
     private Hud hud;
     private StageGame stageGame;
     private Player player;
-    private int FIRST_LEVEL;
     private int currentLevel;
 
     //Tiled map variables
@@ -71,16 +70,19 @@ public class MainGameScreen implements Screen {
         FixtureDef fdef = new FixtureDef();
         Boy body;*/
 
-        frog = new Frog(world, 3, game.batch, this);
         player = new Player(game.batch);
         currentLevel = 1;
         stageGame = new StageGame(world, game.batch, currentLevel);
+        frog = new Frog(world, 3, game.batch, this);
 
         world.setContactListener(new WorldContactListener(frog));
 
     }
 
     public void nextStage(){
+        int stageTimer = stageGame.getStageTimer();
+        int stageLevel = stageGame.getLevel();
+        player.setScore(stageTimer, stageLevel);
         stageGame.dispose();
         int nextLevel = currentLevel + 1;
         currentLevel = nextLevel;
@@ -96,9 +98,10 @@ public class MainGameScreen implements Screen {
     }
 
     public void update(float dt){
-        frog.handlePositionOfFrog(frog);
+
        // vehicle.update(vehicle);
         stageGame.update(dt);
+        frog.handlePositionOfFrog(frog);
 
         world.step(1/60f, 6, 2);
 
