@@ -38,6 +38,8 @@ public class Frog extends Sprite implements Disposable {
     private Label livesCountLabel;
     private Label livesLabel;
 
+    // adicionar argumento no construtor do frog: ele tem q receber a screen de gameover
+    // ver comentario na linha 106
     public Frog(World world, int lives, SpriteBatch sb, MainGameScreen screen){
         this.screen = screen;
         this.world = world;
@@ -101,7 +103,9 @@ public class Frog extends Sprite implements Disposable {
     public void die(boolean frogDied) {
         this.frogDied = frogDied;
         lives = lives - 1;
-        Gdx.app.log("Morreu", "...");
+        if(lives == 0){ //aqui chama a screen de gameover
+            Gdx.app.log("Gameover", "acabou as vida troxa");
+        } else Gdx.app.log("Morreu", "reposicionou");
     }
 
     public void hudFrog(){

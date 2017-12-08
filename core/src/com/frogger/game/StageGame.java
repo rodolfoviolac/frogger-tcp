@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.frogger.game.screens.MainGameScreen;
 
 import java.util.Random;
 
@@ -28,14 +29,18 @@ public class StageGame implements Disposable {
     private Label timeCountLabel;
     private Viewport viewport;
     private Stage stage;
+    private MainGameScreen screen;
 
-    public StageGame(World world, SpriteBatch sb, int level) {
+    // substituir a MainGameScreen screen que StageGame recebe pela Screen de time Over / Game Over, etc
+    // ver comentário na linha 59
+    public StageGame(World world, SpriteBatch sb, int level, MainGameScreen screen) {
         this.level = level;
+        this.screen = screen;
         viewport = new FitViewport(FroggerGame.V_WIDTH, FroggerGame.V_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, sb);
         lanes = new Lane[NUM_OF_LANES];
         timeCount = 0;
-        stageTimer = 50;
+        stageTimer = 10;
         timeLabel = new Label("TIME", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         timeCountLabel = new Label(String.format("%02d", stageTimer), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         sortDirectionLanes(world, level);
@@ -49,11 +54,17 @@ public class StageGame implements Disposable {
         for (int i : IS_LANE) {
             lanes[i].update();
         }
-        timeCount += dt;
-        if(timeCount >= 1){
-            stageTimer--;
-            timeCountLabel.setText(String.format("%02d", stageTimer));
+        if(stageTimer <= 0){
             timeCount = 0;
+            // aqui chamar a screen de TimeOver (setScreen....)
+            Gdx.app.log("Time", "over");
+        } else {
+            timeCount += dt;
+            if(timeCount >= 1){
+                stageTimer--;
+                timeCountLabel.setText(String.format("%02d", stageTimer));
+                timeCount = 0;
+            }
         }
     }
 

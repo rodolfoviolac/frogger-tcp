@@ -72,7 +72,7 @@ public class MainGameScreen implements Screen {
 
         player = new Player(game.batch);
         currentLevel = 1;
-        stageGame = new StageGame(world, game.batch, currentLevel);
+        stageGame = new StageGame(world, game.batch, currentLevel, this);
         frog = new Frog(world, 3, game.batch, this);
 
         world.setContactListener(new WorldContactListener(frog));
@@ -86,7 +86,7 @@ public class MainGameScreen implements Screen {
         stageGame.dispose();
         int nextLevel = currentLevel + 1;
         currentLevel = nextLevel;
-        stageGame = new StageGame(world, game.batch, nextLevel);
+        stageGame = new StageGame(world, game.batch, nextLevel, this);
     }
 
 
