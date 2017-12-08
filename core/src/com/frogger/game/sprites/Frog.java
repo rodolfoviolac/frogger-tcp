@@ -81,7 +81,7 @@ public class Frog extends Sprite implements Disposable {
                 frog.b2body.setTransform(currentPosition.add(0, JUMP_SIZE), 0);
             }
         } else if (Gdx.input.isKeyJustPressed((Input.Keys.DOWN))) {
-            if (currentPosition.y > SIZE_OF_FROG + 2) {
+            if (currentPosition.y > SIZE_OF_FROG + 2 + 2*JUMP_SIZE) {
                 frog.b2body.setTransform(currentPosition.add(0, -JUMP_SIZE), 0);
             }
         } else if (Gdx.input.isKeyJustPressed((Input.Keys.LEFT))) {
