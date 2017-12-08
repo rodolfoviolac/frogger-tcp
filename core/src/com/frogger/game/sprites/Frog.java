@@ -74,11 +74,10 @@ public class Frog extends Sprite implements Disposable {
     public void handlePositionOfFrog(Frog frog) {
         Vector2 currentPosition = new Vector2(frog.b2body.getPosition());
         if (Gdx.input.isKeyJustPressed((Input.Keys.UP))) {
-            if (currentPosition.y == Gdx.graphics.getHeight() - (JUMP_SIZE / 2)) {
+            frog.b2body.setTransform(currentPosition.add(0, JUMP_SIZE), 0);
+            if (currentPosition.y >= Gdx.graphics.getHeight()) {
                 frog.b2body.setTransform(positionInitial, 0);
                 screen.nextStage();
-            } else if (currentPosition.y < Gdx.graphics.getHeight() - SIZE_OF_FROG - 2) {
-                frog.b2body.setTransform(currentPosition.add(0, JUMP_SIZE), 0);
             }
         } else if (Gdx.input.isKeyJustPressed((Input.Keys.DOWN))) {
             if (currentPosition.y > SIZE_OF_FROG + 2 + 2*JUMP_SIZE) {
