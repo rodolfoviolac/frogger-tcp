@@ -40,6 +40,7 @@ public class MainGameScreen implements Screen {
     private Player player;
     private int currentLevel;
 
+
     //Tiled map variables
     private TmxMapLoader maploader;
     private TiledMap map;
@@ -58,7 +59,7 @@ public class MainGameScreen implements Screen {
         gamePort = new FitViewport(FroggerGame.V_WIDTH,FroggerGame.V_HEIGHT,gamecam);
         //hud = new Hud(game.batch);
         maploader = new TmxMapLoader();
-        map = maploader.load("stage.tmx");
+        map = maploader.load("bground.tmx");
         renderer = new OrthogonalTiledMapRenderer(map);
         gamecam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() /2, 0);
 

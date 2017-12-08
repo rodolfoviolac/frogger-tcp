@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="1.0.3" orientation="orthogonal" renderorder="right-down" width="13" height="15" tilewidth="48" tileheight="48" nextobjectid="1">
+ <tileset firstgid="1" source="sidewalk.tsx"/>
+ <tileset firstgid="14" source="sidewalk-next.tsx"/>
+ <tileset firstgid="27" source="frogger-logo.tsx"/>
+ <layer name="Camada de Tiles 1" width="13" height="15">
+  <data encoding="base64" compression="zlib">
+   eJzt0MtuQQEUBdDrBxggIahXQ6lWihaNVz2iXuX/v6aricHtHd6BkZ2snMnZk50MgiBFMiRNhiy5kPz1/qVAkRIPlKlQpUadx+B/GjR5okWbZzq88Eo30nmjR58B73wwZMSYz0hnwpQZcxZ8sWTFmk2ks+WbHXsOHDnxw5lL6D8Rw323+LvdIr+kbxX9
+  </data>
+ </layer>
+</map>
