@@ -90,6 +90,10 @@ public class MainGameScreen implements Screen {
         stageGame = new StageGame(world, game.batch, nextLevel, this);
     }
 
+    public void gameOver(){
+        game.setScreen(new GameOverScreen(game));
+    }
+
 
     @Override
     public void show() {
@@ -108,6 +112,10 @@ public class MainGameScreen implements Screen {
 
         gamecam.update();
         renderer.setView(gamecam);
+
+        if (frog.lives == 0 || stageGame.getStageTimer() == 0){
+            gameOver();
+        }
     }
 
     @Override
@@ -130,6 +138,8 @@ public class MainGameScreen implements Screen {
 
         stageGame.hudStage();
         stageGame.getStage().draw();
+
+
 
     }
 

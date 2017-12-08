@@ -26,7 +26,7 @@ public class Frog extends Sprite implements Disposable {
     private Body b2body;
     private MainGameScreen screen;
 
-    private boolean frogDied;
+    public boolean frogDied;
     private Viewport viewport;
     private Stage stage;
 
@@ -34,7 +34,7 @@ public class Frog extends Sprite implements Disposable {
     private final Integer JUMP_SIZE = 48;
     private final Integer SIZE_OF_FROG = 22;
 
-    private Integer lives;
+    public Integer lives;
     private Label livesCountLabel;
     private Label livesLabel;
 
@@ -61,6 +61,7 @@ public class Frog extends Sprite implements Disposable {
         FixtureDef fdef = new FixtureDef();
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(SIZE_OF_FROG,SIZE_OF_FROG);
+
 
         fdef.shape = shape;
         //fdef.isSensor = true;
@@ -102,9 +103,6 @@ public class Frog extends Sprite implements Disposable {
     public void die(boolean frogDied) {
         this.frogDied = frogDied;
         lives = lives - 1;
-        if(lives == 0){ //aqui chama a screen de gameover
-            Gdx.app.log("Gameover", "acabou as vida troxa");
-        } else Gdx.app.log("Morreu", "reposicionou");
     }
 
     public void hudFrog(){

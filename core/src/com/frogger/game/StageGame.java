@@ -40,7 +40,7 @@ public class StageGame implements Disposable {
         stage = new Stage(viewport, sb);
         lanes = new Lane[NUM_OF_LANES];
         timeCount = 0;
-        stageTimer = 50;
+        stageTimer = 10;
         timeLabel = new Label("TIME", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         timeCountLabel = new Label(String.format("%02d", stageTimer), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         sortDirectionLanes(world, level);
