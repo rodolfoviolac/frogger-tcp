@@ -91,7 +91,7 @@ public class MainGameScreen implements Screen {
     }
 
     public void gameOver(){
-        game.setScreen(new GameOverScreen(game));
+        game.setScreen(new GameOverScreen(game, player));
     }
 
 

@@ -26,6 +26,7 @@ public class GameOverScreen implements Screen {
     Texture backButtonActive;
     Texture backButtonInactive;
     BitmapFont scoreFont;
+    private int score;
     FroggerGame game;
     private Player player;
 
@@ -38,28 +39,25 @@ public class GameOverScreen implements Screen {
 
     //private Game game;
 
-    public GameOverScreen(final FroggerGame game){
+    public GameOverScreen(final FroggerGame game, Player player){
         this.game = game;
-
+        this.player = player;
 
         gameOverLogo = new Texture("menu-assets/logo-gameOver.png");
         backButtonActive = new Texture("menu-assets/backButton1.png");
         backButtonInactive = new Texture("menu-assets/backButton2.png");
         scoreFont = new BitmapFont(Gdx.files.internal("fonts/score.fnt"));
+        score = player.getScore();
 
         Gdx.input.setInputProcessor(new InputAdapter(){
             @Override
             public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-
                 if(backButtonIsHover()){
                     game.setScreen(new MainMenuScreen(game));
                 }
-
-
                 return super.touchUp(screenX, screenY, pointer, button);
             }
         });
-
 
         Gdx.input.getTextInput(textListener, "Nome para High Score: ", "Seu nome", "");
     }
@@ -101,7 +99,7 @@ public class GameOverScreen implements Screen {
         GlyphLayout seuScoreText = new GlyphLayout(scoreFont,  " Seu Score: ", Color.WHITE, 0, Align.left, false);
         scoreFont.draw(game.batch, seuScoreText, FroggerGame.screenWidth / 2 - 190, 450);
 
-        GlyphLayout scoreNumberText = new GlyphLayout(scoreFont,  " 1 ", Color.WHITE, 0, Align.left, false);
+        GlyphLayout scoreNumberText = new GlyphLayout(scoreFont,  String.valueOf(score), Color.WHITE, 0, Align.left, false);
         scoreFont.draw(game.batch, scoreNumberText, FroggerGame.screenWidth / 2 - 50, 350);
 
         game.batch.end();
@@ -119,7 +117,7 @@ public class GameOverScreen implements Screen {
         {
             System.out.println(input);
 
-            WriteJson.addPlayerToDB(input,12);
+            WriteJson.addPlayerToDB(input,score);
         }
 
         @Override
