@@ -2,7 +2,6 @@ package com.frogger.game.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -10,15 +9,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.JsonReader;
 import com.frogger.game.FroggerGame;
 import com.frogger.game.fileHandler.ReadJson;
-import com.frogger.game.screens.MainMenuScreen;
-import com.google.gson.Gson;
-import com.oracle.javafx.jmx.json.JSONReader;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 
 
 public class HighScoreMenuScreen implements Screen {
