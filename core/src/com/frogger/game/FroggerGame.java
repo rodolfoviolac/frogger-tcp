@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.frogger.game.screens.HighScoreMenuScreen;
 import com.frogger.game.screens.MainGameScreen;
+import com.frogger.game.screens.MainMenuScreen;
 
 
 public class FroggerGame extends Game {
@@ -18,7 +19,7 @@ public class FroggerGame extends Game {
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		setScreen(new HighScoreMenuScreen(this));
+		setScreen(new MainMenuScreen(this));
 	}
 
 	@Override
