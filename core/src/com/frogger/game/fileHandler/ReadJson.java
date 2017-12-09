@@ -64,7 +64,7 @@ public class ReadJson {
             BufferedReader br = new BufferedReader(new FileReader(path));
             PlayerScore DB = gson.fromJson(br, PlayerScore.class);
 
-            for (int i=0; i<=1 && i<DB.getHighScorePlayersScore().size(); i++){
+            for (int i=0; i<=9 && i<DB.getHighScorePlayersScore().size(); i++){
                 anArray[i]=DB.getHighScorePlayersScore().get(i);
             }
 

@@ -18,7 +18,7 @@ public class WriteJson {
         try
         {
             Gson gson = new Gson();
-            String path = new File("core/assets/froggerDB.json").getAbsolutePath();
+            String path = new File("froggerDB.json").getAbsolutePath();
             BufferedReader br = new BufferedReader(new FileReader(path));
             PlayerScore DB = gson.fromJson(br, PlayerScore.class);
 
