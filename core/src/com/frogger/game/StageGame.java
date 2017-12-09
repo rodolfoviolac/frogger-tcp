@@ -36,7 +36,7 @@ public class StageGame implements Disposable {
     public StageGame(World world, SpriteBatch sb, int level, MainGameScreen screen) {
         this.level = level;
         this.screen = screen;
-        viewport = new FitViewport(FroggerGame.V_WIDTH, FroggerGame.V_HEIGHT, new OrthographicCamera());
+        viewport = new FitViewport(FroggerGame.screenWidth, FroggerGame.screenHeight, new OrthographicCamera());
         stage = new Stage(viewport, sb);
         lanes = new Lane[NUM_OF_LANES];
         timeCount = 0;

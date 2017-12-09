@@ -44,7 +44,7 @@ public class Frog extends Sprite implements Disposable {
         this.screen = screen;
         this.world = world;
         this.lives = lives;
-        viewport = new FitViewport(FroggerGame.V_WIDTH, FroggerGame.V_HEIGHT,new OrthographicCamera());
+        viewport = new FitViewport(FroggerGame.screenWidth, FroggerGame.screenWidth,new OrthographicCamera());
         stage = new Stage(viewport, sb);
         positionInitial = new Vector2(Gdx.graphics.getWidth() / 2,120);
         livesCountLabel = new Label(String.format("%01d",lives),new Label.LabelStyle(new BitmapFont(), Color.WHITE));

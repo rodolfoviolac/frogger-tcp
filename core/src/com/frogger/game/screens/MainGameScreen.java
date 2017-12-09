@@ -56,7 +56,7 @@ public class MainGameScreen implements Screen {
     public MainGameScreen(FroggerGame game){
         this.game = game;
         gamecam = new OrthographicCamera();
-        gamePort = new FitViewport(FroggerGame.V_WIDTH,FroggerGame.V_HEIGHT,gamecam);
+        gamePort = new FitViewport(FroggerGame.screenWidth,FroggerGame.screenHeight,gamecam);
         //hud = new Hud(game.batch);
         maploader = new TmxMapLoader();
         map = maploader.load("bground.tmx");

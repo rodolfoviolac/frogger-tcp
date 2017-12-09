@@ -10,8 +10,8 @@ public class DesktopLauncher {
 
 		config.title = "Title";
 		//config.useGL20 = true;
-		config.height = 720;
-		config.width = 624;
+		config.height = FroggerGame.screenHeight;
+		config.width = FroggerGame.screenWidth;
 		config.resizable = false;
 		new LwjglApplication(new FroggerGame(), config);
 	}

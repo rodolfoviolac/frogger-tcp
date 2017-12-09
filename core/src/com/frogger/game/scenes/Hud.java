@@ -33,7 +33,7 @@ public class Hud {
         lives = 0;
         worldTimer = 300;
 
-        viewport = new FitViewport(FroggerGame.V_WIDTH, FroggerGame.V_HEIGHT,new OrthographicCamera());
+        viewport = new FitViewport(FroggerGame.screenWidth, FroggerGame.screenHeight,new OrthographicCamera());
         stage = new Stage(viewport, sb);
 
         Table table = new Table();

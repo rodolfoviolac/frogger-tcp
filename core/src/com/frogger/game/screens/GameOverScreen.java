@@ -22,7 +22,7 @@ public class GameOverScreen implements Screen {
 
     public GameOverScreen(Game game){
         this.game = game;
-        viewport = new FitViewport(FroggerGame.V_WIDTH, FroggerGame.V_HEIGHT, new OrthographicCamera());
+        viewport = new FitViewport(FroggerGame.screenWidth, FroggerGame.screenHeight, new OrthographicCamera());
         stage = new Stage(viewport, ((FroggerGame) game).batch);
 
         Label.LabelStyle font = new Label.LabelStyle(new BitmapFont(), Color.WHITE);

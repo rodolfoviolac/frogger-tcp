@@ -20,7 +20,7 @@ public class Player {
 
     public Player(SpriteBatch sb){
         score = 0;
-        viewport = new FitViewport(FroggerGame.V_WIDTH, FroggerGame.V_HEIGHT,new OrthographicCamera());
+        viewport = new FitViewport(FroggerGame.screenWidth, FroggerGame.screenHeight,new OrthographicCamera());
         stage = new Stage(viewport, sb);
         scoreLabel = new Label("SCORE", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         scoreCountLabel = new Label(String.format("%06d",score),new Label.LabelStyle(new BitmapFont(), Color.WHITE));
