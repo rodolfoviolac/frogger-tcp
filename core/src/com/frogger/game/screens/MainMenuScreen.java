@@ -13,30 +13,43 @@ public class MainMenuScreen implements Screen {
     Texture exitButtonInactive;
     Texture playButtonActive;
     Texture playButtonInactive;
+    Texture scoreButtonActive;
+    Texture scoreButtonInactive;
     Texture froggerLogo;
 
-    private static final int exitButtonWidth = 300;
-    private static final int exitButtonHeight = 150;
-    private static final int playButtonWidth = 300;
-    private static final int playButtonHeight = 150;
+    private static final int exitButtonWidth = 190;
+    private static final int exitButtonHeight = 90;
+    private static final int playButtonWidth = 190;
+    private static final int playButtonHeight = 90;
+    private static final int scoreButtonWidth = 190;
+    private static final int scoreButtonHeight = 90;
     private static final int froggerLogoWidth = 500;
     private static final int froggerLogoHeight = 150;
-    private static final int playButtonY = 240;
-    private static final int exitButtonY = 90;
-    private static final int froggerLogoY = 450;
+    private static final int playButtonY = 340;
+    private static final int scoreButtonY = 210;
+    private static final int exitButtonY = 75;
+    private static final int froggerLogoY = 500;
 
 
     public MainMenuScreen (FroggerGame game) {
         this.game = game;
-        playButtonActive = new Texture("assets-raw/images/play_button_active.png");
-        playButtonInactive = new Texture("assets-raw/images/play_button_inactive.png");
-        exitButtonActive = new Texture("assets-raw/images/exit_button_active.png");
-        exitButtonInactive = new Texture("assets-raw/images/exit_button_inactive.png");
-        froggerLogo = new Texture("assets-raw/images/logo.png");
+        playButtonActive = new Texture("menu-assets/playButton1.png");
+        playButtonInactive = new Texture("menu-assets/playButton2.png");
+        scoreButtonActive = new Texture("menu-assets/scoreButton1.png");
+        scoreButtonInactive = new Texture("menu-assets/scoreButton2.png");
+        exitButtonActive = new Texture("menu-assets/exitButton1.png");
+        exitButtonInactive = new Texture("menu-assets/exitButton2.png");
+        froggerLogo = new Texture("menu-assets/logo-frogger.png");
     }
 
     private boolean exitButtonIsHover(){
         if(Gdx.input.getX() < exitPositionX() + exitButtonWidth && Gdx.input.getX() > exitPositionX() && FroggerGame.screenHeight - Gdx.input.getY() < exitButtonY + exitButtonHeight && FroggerGame.screenHeight - Gdx.input.getY() > exitButtonY){
+            return true;
+        } else return false;
+    }
+
+    private boolean scoreButtonIsHover(){
+        if(Gdx.input.getX() < scorePositionX() + scoreButtonWidth && Gdx.input.getX() > scorePositionX() && FroggerGame.screenHeight - Gdx.input.getY() < scoreButtonY + scoreButtonHeight && FroggerGame.screenHeight - Gdx.input.getY() > scoreButtonY){
             return true;
         } else return false;
     }
@@ -53,6 +66,10 @@ public class MainMenuScreen implements Screen {
 
     private int playPositionX(){
         return (FroggerGame.screenWidth / 2) - playButtonWidth / 2;
+    }
+
+    private int scorePositionX(){
+        return (FroggerGame.screenWidth / 2) - scoreButtonWidth / 2;
     }
 
     private int froggerLogoPositionX(){
@@ -80,6 +97,16 @@ public class MainMenuScreen implements Screen {
             }
         } else {
             game.batch.draw(exitButtonInactive, exitPositionX(), exitButtonY, exitButtonWidth, exitButtonHeight);
+        }
+
+        if(scoreButtonIsHover()){
+            game.batch.draw(scoreButtonActive, scorePositionX(), scoreButtonY, scoreButtonWidth, scoreButtonHeight);
+            if(Gdx.input.isTouched()){
+                this.dispose();
+                game.setScreen(new HighScoreMenuScreen(game));
+            }
+        } else {
+            game.batch.draw(scoreButtonInactive, scorePositionX(), scoreButtonY, scoreButtonWidth, scoreButtonHeight);
         }
 
         if(playButtonIsHover()){
