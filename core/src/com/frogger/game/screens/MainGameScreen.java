@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
@@ -33,6 +34,7 @@ import com.frogger.game.sprites.Vehicle;
 
 public class MainGameScreen implements Screen {
     FroggerGame game;
+    private TextureAtlas atlas;
     private OrthographicCamera gamecam;
     private Viewport gamePort;
     private Hud hud;
@@ -58,6 +60,7 @@ public class MainGameScreen implements Screen {
         gamecam = new OrthographicCamera();
         gamePort = new FitViewport(FroggerGame.screenWidth,FroggerGame.screenHeight,gamecam);
         //hud = new Hud(game.batch);
+        atlas = new TextureAtlas("Frog_and_Vehicles.atlas");
         maploader = new TmxMapLoader();
         map = maploader.load("bground.tmx");
         renderer = new OrthogonalTiledMapRenderer(map);
@@ -77,7 +80,10 @@ public class MainGameScreen implements Screen {
         frog = new Frog(world, 3, game.batch, this);
 
         world.setContactListener(new WorldContactListener(frog));
+    }
 
+    public TextureAtlas getAtlas(){
+        return atlas;
     }
 
     public void nextStage(){
@@ -113,6 +119,8 @@ public class MainGameScreen implements Screen {
         gamecam.update();
         renderer.setView(gamecam);
 
+        frog.update(dt);
+
         if (frog.lives == 0 || stageGame.getStageTimer() == 0){
             gameOver();
         }
@@ -128,6 +136,11 @@ public class MainGameScreen implements Screen {
         renderer.render();
 
         b2dr.render(world, gamecam.combined);
+
+        game.batch.begin();
+        frog.draw(game.batch);
+        game.batch.end();
+
         game.batch.setProjectionMatrix(frog.getStage().getCamera().combined);
 
         frog.hudFrog();
