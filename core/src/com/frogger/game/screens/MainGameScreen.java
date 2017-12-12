@@ -107,9 +107,9 @@ public class MainGameScreen implements Screen {
     }
 
     private void printHud(){
-        frog.hudFrog();
-        player.hudPlayer();
-        stageGame.hudStage();
+        frog.hudLives();
+        player.hudScore();
+        stageGame.hudTime();
     }
 
     @Override

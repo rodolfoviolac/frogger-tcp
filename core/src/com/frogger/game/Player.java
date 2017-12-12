@@ -26,7 +26,7 @@ public class Player {
         scoreCountLabel = new Label(String.format("%06d",score),new Label.LabelStyle(new BitmapFont(), Color.WHITE));
     }
 
-    public void hudPlayer(){
+    public void hudScore(){
         Table table = new Table();
         table.bottom();
         table.setFillParent(true);

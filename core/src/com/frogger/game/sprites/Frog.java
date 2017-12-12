@@ -123,7 +123,7 @@ public class Frog extends Sprite implements Disposable {
         imgFrog = new Texture("frog/frog_up.png");
     }
 
-    public void hudFrog(){
+    public void hudLives(){
         Table table = new Table();
         table.bottom();
         table.setFillParent(true);

@@ -85,7 +85,7 @@ public class StageGame {
         return level;
     }
 
-    public void hudStage() {
+    public void hudTime() {
         Table table = new Table();
         table.bottom();
         table.setFillParent(true);
