@@ -112,7 +112,7 @@ public class StageGame {
         String direction;
 
         for (int numOfLane : IS_LANE) {
-            int iDirection = 1 + (int) (Math.random() * 3);
+            int iDirection = 1 + (int) (Math.random() * 2);
             if (iDirection == 1) {
                 direction = "left";
             } else direction = "right";
