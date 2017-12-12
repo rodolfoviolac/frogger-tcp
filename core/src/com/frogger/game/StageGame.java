@@ -110,13 +110,32 @@ public class StageGame {
 
     private void sortDirectionLanes(World world, int level) {
         String direction;
+        String currentLaneDirection;
+        String lastLaneDirection = "last";
+        String nextLaneOppositeDirection = null;
+        boolean changeDirection = false;
 
         for (int numOfLane : IS_LANE) {
-            int iDirection = 1 + (int) (Math.random() * 2);
-            if (iDirection == 1) {
-                direction = "left";
-            } else direction = "right";
+
+            if (changeDirection){
+                direction = nextLaneOppositeDirection;
+            } else {
+                int iDirection = 1 + (int) (Math.random() * 2);
+                if (iDirection == 1) {
+                    direction = "left";
+                } else direction = "right";
+            }
+
+            currentLaneDirection = direction;
+            if (lastLaneDirection.equals(currentLaneDirection)){
+                changeDirection = true;
+                if (currentLaneDirection.equals("right")) {
+                    nextLaneOppositeDirection = "left";
+                } else nextLaneOppositeDirection = "right";
+            } else changeDirection = false;
+
             lanes[numOfLane] = new Lane(world, DISTANCE_OF_LANES, level, direction, this, numOfLane);
+            lastLaneDirection = direction;
         }
     }
 
