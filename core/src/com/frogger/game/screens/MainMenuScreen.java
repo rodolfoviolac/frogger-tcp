@@ -1,21 +1,14 @@
 package com.frogger.game.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.frogger.game.FroggerGame;
 
 public class MainMenuScreen implements Screen {
-
-    FroggerGame game;
-    Texture exitButtonActive;
-    Texture exitButtonInactive;
-    Texture playButtonActive;
-    Texture playButtonInactive;
-    Texture scoreButtonActive;
-    Texture scoreButtonInactive;
-    Texture froggerLogo;
 
     private static final int exitButtonWidth = 190;
     private static final int exitButtonHeight = 90;
@@ -29,9 +22,18 @@ public class MainMenuScreen implements Screen {
     private static final int scoreButtonY = 210;
     private static final int exitButtonY = 75;
     private static final int froggerLogoY = 500;
+    private static int controlSound = 0;
+    FroggerGame game;
+    Texture exitButtonActive;
+    Texture exitButtonInactive;
+    Texture playButtonActive;
+    Texture playButtonInactive;
+    Texture scoreButtonActive;
+    Texture scoreButtonInactive;
+    Texture froggerLogo;
 
 
-    public MainMenuScreen (FroggerGame game) {
+    public MainMenuScreen(final FroggerGame game) {
         this.game = game;
         playButtonActive = new Texture("menu-assets/playButton1.png");
         playButtonInactive = new Texture("menu-assets/playButton2.png");
@@ -40,39 +42,57 @@ public class MainMenuScreen implements Screen {
         exitButtonActive = new Texture("menu-assets/exitButton1.png");
         exitButtonInactive = new Texture("menu-assets/exitButton2.png");
         froggerLogo = new Texture("menu-assets/logo-frogger.png");
+        final Music music = Gdx.audio.newMusic(Gdx.files.internal("data/sounds/splash2.wav"));
+
+
+        Gdx.input.setInputProcessor(new InputAdapter() {
+            @Override
+            public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+                if (scoreButtonIsHover()) {
+                    music.play();
+                    game.setScreen(new HighScoreMenuScreen(game));
+                } else if (playButtonIsHover()) {
+                    music.play();
+                    game.setScreen(new MainGameScreen(game));
+                }
+                return super.touchUp(screenX, screenY, pointer, button);
+            }
+        });
+
+
     }
 
-    private boolean exitButtonIsHover(){
-        if(Gdx.input.getX() < exitPositionX() + exitButtonWidth && Gdx.input.getX() > exitPositionX() && FroggerGame.screenHeight - Gdx.input.getY() < exitButtonY + exitButtonHeight && FroggerGame.screenHeight - Gdx.input.getY() > exitButtonY){
+    private boolean exitButtonIsHover() {
+        if (Gdx.input.getX() < exitPositionX() + exitButtonWidth && Gdx.input.getX() > exitPositionX() && FroggerGame.screenHeight - Gdx.input.getY() < exitButtonY + exitButtonHeight && FroggerGame.screenHeight - Gdx.input.getY() > exitButtonY) {
             return true;
         } else return false;
     }
 
-    private boolean scoreButtonIsHover(){
-        if(Gdx.input.getX() < scorePositionX() + scoreButtonWidth && Gdx.input.getX() > scorePositionX() && FroggerGame.screenHeight - Gdx.input.getY() < scoreButtonY + scoreButtonHeight && FroggerGame.screenHeight - Gdx.input.getY() > scoreButtonY){
+    private boolean scoreButtonIsHover() {
+        if (Gdx.input.getX() < scorePositionX() + scoreButtonWidth && Gdx.input.getX() > scorePositionX() && FroggerGame.screenHeight - Gdx.input.getY() < scoreButtonY + scoreButtonHeight && FroggerGame.screenHeight - Gdx.input.getY() > scoreButtonY) {
             return true;
         } else return false;
     }
 
-    private boolean playButtonIsHover(){
-        if(Gdx.input.getX() < playPositionX() + playButtonWidth && Gdx.input.getX() > playPositionX() && FroggerGame.screenHeight - Gdx.input.getY() < playButtonY + playButtonHeight && FroggerGame.screenHeight - Gdx.input.getY() > playButtonY){
+    private boolean playButtonIsHover() {
+        if (Gdx.input.getX() < playPositionX() + playButtonWidth && Gdx.input.getX() > playPositionX() && FroggerGame.screenHeight - Gdx.input.getY() < playButtonY + playButtonHeight && FroggerGame.screenHeight - Gdx.input.getY() > playButtonY) {
             return true;
         } else return false;
     }
 
-    private int exitPositionX(){
+    private int exitPositionX() {
         return (FroggerGame.screenWidth / 2) - exitButtonWidth / 2;
     }
 
-    private int playPositionX(){
+    private int playPositionX() {
         return (FroggerGame.screenWidth / 2) - playButtonWidth / 2;
     }
 
-    private int scorePositionX(){
+    private int scorePositionX() {
         return (FroggerGame.screenWidth / 2) - scoreButtonWidth / 2;
     }
 
-    private int froggerLogoPositionX(){
+    private int froggerLogoPositionX() {
         return (FroggerGame.screenWidth / 2) - froggerLogoWidth / 2;
     }
 
@@ -88,33 +108,25 @@ public class MainMenuScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         game.batch.begin();
 
-        game.batch.draw(froggerLogo, froggerLogoPositionX(), froggerLogoY, froggerLogoWidth ,froggerLogoHeight);
+        game.batch.draw(froggerLogo, froggerLogoPositionX(), froggerLogoY, froggerLogoWidth, froggerLogoHeight);
 
-        if(exitButtonIsHover()){
+        if (exitButtonIsHover()) {
             game.batch.draw(exitButtonActive, exitPositionX(), exitButtonY, exitButtonWidth, exitButtonHeight);
-            if(Gdx.input.isTouched()){
+            if (Gdx.input.isTouched()) {
                 Gdx.app.exit();
             }
         } else {
             game.batch.draw(exitButtonInactive, exitPositionX(), exitButtonY, exitButtonWidth, exitButtonHeight);
         }
 
-        if(scoreButtonIsHover()){
+        if (scoreButtonIsHover()) {
             game.batch.draw(scoreButtonActive, scorePositionX(), scoreButtonY, scoreButtonWidth, scoreButtonHeight);
-            if(Gdx.input.isTouched()){
-                this.dispose();
-                game.setScreen(new HighScoreMenuScreen(game));
-            }
         } else {
             game.batch.draw(scoreButtonInactive, scorePositionX(), scoreButtonY, scoreButtonWidth, scoreButtonHeight);
         }
 
-        if(playButtonIsHover()){
+        if (playButtonIsHover()) {
             game.batch.draw(playButtonActive, playPositionX(), playButtonY, playButtonWidth, playButtonHeight);
-            if(Gdx.input.isTouched()){
-                this.dispose();
-                 game.setScreen(new MainGameScreen(game));
-            }
         } else {
             game.batch.draw(playButtonInactive, playPositionX(), playButtonY, playButtonWidth, playButtonHeight);
         }

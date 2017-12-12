@@ -26,10 +26,6 @@ public class Player {
         scoreCountLabel = new Label(String.format("%06d",score),new Label.LabelStyle(new BitmapFont(), Color.WHITE));
     }
 
-    public Stage getStage(){
-        return stage;
-    }
-
     public void hudPlayer(){
         Table table = new Table();
         table.bottom();
@@ -49,6 +45,7 @@ public class Player {
         table.add().expandX().padBottom(10);
 
         stage.addActor(table);
+        stage.draw();
     }
 
     public int getScore(){

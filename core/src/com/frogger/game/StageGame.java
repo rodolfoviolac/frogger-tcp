@@ -1,6 +1,5 @@
 package com.frogger.game;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -9,19 +8,14 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.frogger.game.screens.MainGameScreen;
 
-import java.util.Random;
-
-public class StageGame implements Disposable {
-    Lane lanes[];
-    private int NUM_OF_LANES = 14;
-    private int IS_LANE[] = {3, 4, 5, 6, 7, 9, 10, 11, 12, 13};
-    private int LANE_RADIUS = 24;
-    private int DISTANCE_OF_LANES = 48;
+public class StageGame {
+    private Lane lanes[];
+    private final int NUM_OF_LANES = 14;
+    private final int IS_LANE[] = {3, 4, 5, 6, 7, 9, 10, 11, 12, 13};
+    private final int DISTANCE_OF_LANES = 48;
     private float timeCount;
     private Integer stageTimer;
     private int level;
@@ -29,16 +23,12 @@ public class StageGame implements Disposable {
     private Label timeCountLabel;
     private Viewport viewport;
     private Stage stage;
-    private MainGameScreen screen;
 
-    // substituir a MainGameScreen screen que StageGame recebe pela Screen de time Over / Game Over, etc
-    // ver comentário na linha 59
-    public StageGame(World world, SpriteBatch sb, int level, MainGameScreen screen) {
-        this.level = level;
-        this.screen = screen;
+    public StageGame(World world, SpriteBatch sb, int level) {
         viewport = new FitViewport(FroggerGame.screenWidth, FroggerGame.screenHeight, new OrthographicCamera());
         stage = new Stage(viewport, sb);
         lanes = new Lane[NUM_OF_LANES];
+        this.level = level;
         timeCount = 0;
         stageTimer = 50;
         timeLabel = new Label("TIME", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
@@ -46,8 +36,29 @@ public class StageGame implements Disposable {
         sortDirectionLanes(world, level);
     }
 
-    public Stage getStage(){
-        return stage;
+    public void draw(SpriteBatch sb){
+        for (int i : IS_LANE){
+            lanes[i].draw(sb);
+        }
+    }
+
+    public int changeLane(int numOfLane){
+        int changeToLane = 0;
+        for (int i : IS_LANE){
+            if (i == numOfLane + 1){
+                if (lanes[numOfLane].getDirection().equals(lanes[i].getDirection())){
+                    if (lanes[i].haveSpaceToChange()){
+                        changeToLane = 1;
+                    }
+                }
+            } else if (i == numOfLane - 1){
+                if (lanes[numOfLane].getDirection().equals(lanes[i].getDirection())){
+                    if (lanes[i].haveSpaceToChange())
+                        changeToLane = -1;
+                }
+            }
+        }
+        return changeToLane * DISTANCE_OF_LANES;
     }
 
     public void update(float dt) {
@@ -56,8 +67,6 @@ public class StageGame implements Disposable {
         }
         if(stageTimer <= 0){
             timeCount = 0;
-            // aqui chamar a screen de TimeOver (setScreen....)
-            Gdx.app.log("Time", "over");
         } else {
             timeCount += dt;
             if(timeCount >= 1){
@@ -96,7 +105,7 @@ public class StageGame implements Disposable {
         table.add().expandX().padBottom(10);
 
         stage.addActor(table);
-
+        stage.draw();
     }
 
     private void sortDirectionLanes(World world, int level) {
@@ -107,14 +116,13 @@ public class StageGame implements Disposable {
             if (iDirection == 1) {
                 direction = "left";
             } else direction = "right";
-            lanes[numOfLane] = new Lane(world, numOfLane * DISTANCE_OF_LANES + LANE_RADIUS, level, direction);
+            lanes[numOfLane] = new Lane(world, DISTANCE_OF_LANES, level, direction, this, numOfLane);
         }
     }
 
-    @Override
-    public void dispose() {
+    public void dispose(World world) {
         for (int i : IS_LANE) {
-            lanes[i].dispose();
+            lanes[i].dispose(world);
         }
     }
 }

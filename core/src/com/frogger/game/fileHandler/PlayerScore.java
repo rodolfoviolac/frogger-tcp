@@ -12,7 +12,7 @@ public class PlayerScore {
     {
         super();
     }
-    public PlayerScore(String playerName, int playerScore, List highScorePlayersName, List highScorePlayersScore)
+    public PlayerScore()
     {
         super();
         this.highScorePlayersName = highScorePlayersName;

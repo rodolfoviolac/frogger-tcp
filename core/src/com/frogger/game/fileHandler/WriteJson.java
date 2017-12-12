@@ -14,33 +14,60 @@ public class WriteJson {
     }
 
     public static void addPlayerToDB(String novoPlayer, Integer novoPlayerScore) {
-
+        String pathDB = new File("froggerDB.json").getAbsolutePath();
+        File f = new File(pathDB);
         try
         {
-            Gson gson = new Gson();
-            String path = new File("froggerDB.json").getAbsolutePath();
-            BufferedReader br = new BufferedReader(new FileReader(path));
-            PlayerScore DB = gson.fromJson(br, PlayerScore.class);
+            if(f.exists()) {
+                Gson gson = new Gson();
+                String path = new File("froggerDB.json").getAbsolutePath();
+                BufferedReader br = new BufferedReader(new FileReader(path));
+                PlayerScore DB = gson.fromJson(br, PlayerScore.class);
 
 
-            DB.getHighScorePlayersName().add(novoPlayer);
-            DB.getHighScorePlayersScore().add(novoPlayerScore);
+                DB.getHighScorePlayersName().add(novoPlayer);
+                DB.getHighScorePlayersScore().add(novoPlayerScore);
 
-            multiSort(DB.getHighScorePlayersScore(),DB.getHighScorePlayersName());
+                multiSort(DB.getHighScorePlayersScore(), DB.getHighScorePlayersName());
 
-            Collections.sort(DB.getHighScorePlayersScore());
+                Collections.sort(DB.getHighScorePlayersScore());
 
-            Collections.reverse(DB.getHighScorePlayersScore());
-            Collections.reverse(DB.getHighScorePlayersName());
+                Collections.reverse(DB.getHighScorePlayersScore());
+                Collections.reverse(DB.getHighScorePlayersName());
 
 
-            Gson gsonWriter = new Gson();
+                Gson gsonWriter = new Gson();
 
-            String jsonString = gsonWriter.toJson(DB);
-            FileWriter fileWriter = new FileWriter(path);
-            fileWriter.write(jsonString);
-            fileWriter.close();
+                String jsonString = gsonWriter.toJson(DB);
+                FileWriter fileWriter = new FileWriter(path);
+                fileWriter.write(jsonString);
+                fileWriter.close();
+            } else {
 
+
+                PlayerScore firstPlayer = new PlayerScore();
+
+                List playerName = new ArrayList();
+                List playerScore = new ArrayList();
+
+                playerName.add(novoPlayer);
+                playerScore.add(novoPlayerScore);
+
+
+                firstPlayer.setHighScorePlayersName(playerName);
+                firstPlayer.setHighScorePlayersScore(playerScore);
+
+
+                Gson gsonFirstWriter = new Gson();
+
+                String jsonString = gsonFirstWriter.toJson(firstPlayer);
+                String path = new File("froggerDB.json").getAbsolutePath();
+                FileWriter fileWriter = new FileWriter(path);
+                fileWriter.write(jsonString);
+                fileWriter.close();
+
+
+            }
 
         }
         catch (IOException e)

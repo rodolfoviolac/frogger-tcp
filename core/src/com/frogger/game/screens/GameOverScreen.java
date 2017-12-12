@@ -16,7 +16,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.frogger.game.FroggerGame;
 import com.frogger.game.Player;
 import com.frogger.game.fileHandler.WriteJson;
-import com.frogger.game.scenes.Hud;
+
 
 public class GameOverScreen implements Screen {
     private Viewport viewport;

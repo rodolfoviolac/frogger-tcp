@@ -3,6 +3,7 @@ package com.frogger.game.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -42,6 +43,7 @@ public class HighScoreMenuScreen implements Screen {
         backButtonActive = new Texture("menu-assets/backButton1.png");
         backButtonInactive = new Texture("menu-assets/backButton2.png");
         froggerLogo = new Texture("menu-assets/highScore-logo.png");
+        final Music music = Gdx.audio.newMusic(Gdx.files.internal("data/sounds/splash2.wav"));
 
         scoreFont = new BitmapFont(Gdx.files.internal("fonts/score.fnt"));
 
@@ -51,6 +53,7 @@ public class HighScoreMenuScreen implements Screen {
 
                 if(backButtonIsHover()){
                     HighScoreMenuScreen.dispose();
+                    music.play();
                     game.setScreen(new MainMenuScreen(game));
                 }
 
