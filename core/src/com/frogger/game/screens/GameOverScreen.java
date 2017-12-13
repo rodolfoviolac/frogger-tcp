@@ -41,7 +41,7 @@ public class GameOverScreen implements Screen {
 
         Sounds.menuLoopStop();
         score = player.getScore();
-        Gdx.input.getTextInput(textListener, "Nome para High Score: ", "Seu nome", "");
+        Gdx.input.getTextInput(textListener, "Name to High Score: ", "Your name", "");
     }
 
     private void defineTextures(){
