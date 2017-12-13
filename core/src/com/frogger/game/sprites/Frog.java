@@ -27,7 +27,7 @@ public class Frog extends Sprite implements Disposable {
     private MainGameScreen screen;
     private Texture imgFrog;
 
-    private boolean frogDied;
+    private boolean frogDied; 
     private Viewport viewport;
     private Stage stage;
     private final Vector2 positionInitial;
