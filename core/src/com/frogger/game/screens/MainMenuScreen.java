@@ -15,9 +15,6 @@ public class MainMenuScreen implements Screen {
     private final int BUTTON_WIDTH = 190;
     private final int BUTTON_HEIGHT = 90;
 
-    private final int FROGGER_LOGO_WIDTH = 500;
-    private final int FROGGER_LOGO_HEIGHT = 150;
-
     private final int PLAY_BUTTON_Y = 340;
     private final int SCORE_BUTTON_Y = 210;
     private final int EXIT_BUTTON_Y = 75;
@@ -64,55 +61,55 @@ public class MainMenuScreen implements Screen {
     }
 
     private boolean exitButtonIsHover() {
-        if (Gdx.input.getX() < buttonPositionX() + BUTTON_WIDTH && Gdx.input.getX() > buttonPositionX() && FroggerGame.screenHeight - Gdx.input.getY() < EXIT_BUTTON_Y + BUTTON_HEIGHT && FroggerGame.screenHeight - Gdx.input.getY() > EXIT_BUTTON_Y) {
+        if (Gdx.input.getX() < buttonPositionX() + BUTTON_WIDTH && Gdx.input.getX() > buttonPositionX() && Gdx.graphics.getHeight() - Gdx.input.getY() < EXIT_BUTTON_Y + BUTTON_HEIGHT && Gdx.graphics.getHeight() - Gdx.input.getY() > EXIT_BUTTON_Y) {
             return true;
         } else return false;
     }
 
     private boolean scoreButtonIsHover() {
-        if (Gdx.input.getX() < buttonPositionX() + BUTTON_WIDTH && Gdx.input.getX() > buttonPositionX() && FroggerGame.screenHeight - Gdx.input.getY() < SCORE_BUTTON_Y + BUTTON_HEIGHT && FroggerGame.screenHeight - Gdx.input.getY() > SCORE_BUTTON_Y) {
+        if (Gdx.input.getX() < buttonPositionX() + BUTTON_WIDTH && Gdx.input.getX() > buttonPositionX() && Gdx.graphics.getHeight() - Gdx.input.getY() < SCORE_BUTTON_Y + BUTTON_HEIGHT && Gdx.graphics.getHeight() - Gdx.input.getY() > SCORE_BUTTON_Y) {
             return true;
         } else return false;
     }
 
     private boolean playButtonIsHover() {
-        if (Gdx.input.getX() < buttonPositionX() + BUTTON_WIDTH && Gdx.input.getX() > buttonPositionX() && FroggerGame.screenHeight - Gdx.input.getY() < PLAY_BUTTON_Y + BUTTON_HEIGHT && FroggerGame.screenHeight - Gdx.input.getY() > PLAY_BUTTON_Y) {
+        if (Gdx.input.getX() < buttonPositionX() + BUTTON_WIDTH && Gdx.input.getX() > buttonPositionX() && Gdx.graphics.getHeight() - Gdx.input.getY() < PLAY_BUTTON_Y + BUTTON_HEIGHT && Gdx.graphics.getHeight() - Gdx.input.getY() > PLAY_BUTTON_Y) {
             return true;
         } else return false;
     }
 
     private int buttonPositionX() {
-        return (FroggerGame.screenWidth / 2) - BUTTON_WIDTH / 2;
+        return (Gdx.graphics.getWidth() / 2) - BUTTON_WIDTH / 2;
     }
 
     private int froggerLogoPositionX() {
-        return (FroggerGame.screenWidth / 2) - FROGGER_LOGO_WIDTH / 2;
+        return (Gdx.graphics.getWidth() / 2) - froggerLogo.getWidth() / 2;
     }
 
     private void logoFroggerDraw(){
-        game.batch.draw(froggerLogo, froggerLogoPositionX(), FROGGER_LOGO_Y, FROGGER_LOGO_WIDTH, FROGGER_LOGO_HEIGHT);
+        game.batch.draw(froggerLogo, froggerLogoPositionX(), FROGGER_LOGO_Y);
     }
 
     private void buttonsDraw(){
         if (exitButtonIsHover()) {
-            game.batch.draw(exitButtonActive, buttonPositionX(), EXIT_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
+            game.batch.draw(exitButtonActive, buttonPositionX(), EXIT_BUTTON_Y);
             if (Gdx.input.isTouched()) {
                 Gdx.app.exit();
             }
         } else {
-            game.batch.draw(exitButtonInactive, buttonPositionX(), EXIT_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
+            game.batch.draw(exitButtonInactive, buttonPositionX(), EXIT_BUTTON_Y);
         }
 
         if (scoreButtonIsHover()) {
-            game.batch.draw(scoreButtonActive, buttonPositionX(), SCORE_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
+            game.batch.draw(scoreButtonActive, buttonPositionX(), SCORE_BUTTON_Y);
         } else {
-            game.batch.draw(scoreButtonInactive, buttonPositionX(), SCORE_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
+            game.batch.draw(scoreButtonInactive, buttonPositionX(), SCORE_BUTTON_Y);
         }
 
         if (playButtonIsHover()) {
-            game.batch.draw(playButtonActive, buttonPositionX(), PLAY_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
+            game.batch.draw(playButtonActive, buttonPositionX(), PLAY_BUTTON_Y);
         } else {
-            game.batch.draw(playButtonInactive, buttonPositionX(), PLAY_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
+            game.batch.draw(playButtonInactive, buttonPositionX(), PLAY_BUTTON_Y);
         }
     }
 
