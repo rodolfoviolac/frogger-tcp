@@ -18,6 +18,7 @@ import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.frogger.game.FroggerGame;
+import com.frogger.game.Sounds;
 import com.frogger.game.screens.MainGameScreen;
 
 public class Frog extends Sprite implements Disposable {
@@ -29,8 +30,9 @@ public class Frog extends Sprite implements Disposable {
     private boolean frogDied;
     private Viewport viewport;
     private Stage stage;
-
     private final Vector2 positionInitial;
+
+    private final int NUM_OF_LIVES = 3;
     private final int COORD_Y_FROG_INITIAL = 120;
     private final Integer JUMP_SIZE = 48;
     private final Integer RADIUS_OF_FROG = 22; //ANTIGO SIZE_OF_FROG
@@ -40,14 +42,11 @@ public class Frog extends Sprite implements Disposable {
     private Label livesCountLabel;
     private Label livesLabel;
 
-    final Music frogJumpMusic = Gdx.audio.newMusic(Gdx.files.internal("data/sounds/jump.wav"));
-    final Music frogDieMusic = Gdx.audio.newMusic(Gdx.files.internal("data/sounds/outofbounds.wav"));
-    final Music frogTargetMusic = Gdx.audio.newMusic(Gdx.files.internal("data/sounds/target.wav"));
 
-    public Frog(World world, int lives, SpriteBatch sb, MainGameScreen screen){
+    public Frog(World world, SpriteBatch sb, MainGameScreen screen){
         this.screen = screen;
         this.world = world;
-        this.lives = lives;
+        lives = NUM_OF_LIVES;
         viewport = new FitViewport(FroggerGame.screenWidth, FroggerGame.screenHeight, new OrthographicCamera());
         stage = new Stage(viewport, sb);
         positionInitial = new Vector2(Gdx.graphics.getWidth() / 2,COORD_Y_FROG_INITIAL);
@@ -84,36 +83,52 @@ public class Frog extends Sprite implements Disposable {
     public void handlePositionOfFrog(Frog frog) {
         Vector2 currentPosition = new Vector2(frog.b2body.getPosition());
         if (Gdx.input.isKeyJustPressed((Input.Keys.UP))) {
-            frog.b2body.setTransform(currentPosition.add(0, JUMP_SIZE), 0);
-            imgFrog = new Texture("frog/frog_up.png");
-            frogJumpMusic.play();
-            if (currentPosition.y >= Gdx.graphics.getHeight()) {
-                frog.b2body.setTransform(positionInitial, 0);
-                frogTargetMusic.play();
-                screen.nextStage();
-            }
+            goUp(frog, currentPosition);
         } else if (Gdx.input.isKeyJustPressed((Input.Keys.DOWN))) {
-            if (currentPosition.y > (SIZE_BOX_FROG / 2) + 2*JUMP_SIZE) {
-                frog.b2body.setTransform(currentPosition.add(0, -JUMP_SIZE), 0);
-                imgFrog = new Texture("frog/frog_down.png");
-                frogJumpMusic.play();
-            }
+            goDown(frog, currentPosition);
         } else if (Gdx.input.isKeyJustPressed((Input.Keys.LEFT))) {
-            if (currentPosition.x > (SIZE_BOX_FROG / 2)) {
-                frog.b2body.setTransform(currentPosition.add(-JUMP_SIZE, 0), 0);
-                imgFrog = new Texture("frog/frog_left.png");
-                frogJumpMusic.play();
-            }
+            goLeft(frog, currentPosition);
         } else if (Gdx.input.isKeyJustPressed((Input.Keys.RIGHT))) {
-            if (currentPosition.x < Gdx.graphics.getWidth() - (SIZE_BOX_FROG / 2) - 4) {
-                frog.b2body.setTransform(currentPosition.add(JUMP_SIZE, 0), 0);
-                imgFrog = new Texture("frog/frog_right.png");
-                frogJumpMusic.play();
-            }
+           goRight(frog, currentPosition);
         } else if(frogDied) {
             frog.b2body.setTransform(positionInitial, 0);
             frogDied = false;
-            frogDieMusic.play();
+            Sounds.frogDie();
+        }
+    }
+
+    private void goUp(Frog frog, Vector2 currentPosition){
+        Sounds.frogJump();
+        frog.b2body.setTransform(currentPosition.add(0, JUMP_SIZE), 0);
+        imgFrog = new Texture("frog/frog_up.png");
+        if (currentPosition.y >= Gdx.graphics.getHeight()) {
+            Sounds.nextLevel();
+            frog.b2body.setTransform(positionInitial, 0);
+            screen.nextStage();
+        }
+    }
+
+    private void goDown(Frog frog, Vector2 currentPosition){
+        if (currentPosition.y > (SIZE_BOX_FROG / 2) + 2*JUMP_SIZE) {
+            Sounds.frogJump();
+            frog.b2body.setTransform(currentPosition.add(0, -JUMP_SIZE), 0);
+            imgFrog = new Texture("frog/frog_down.png");
+        }
+    }
+
+    private void goLeft(Frog frog, Vector2 currentPosition){
+        if (currentPosition.x > (SIZE_BOX_FROG / 2)) {
+            Sounds.frogJump();
+            frog.b2body.setTransform(currentPosition.add(-JUMP_SIZE, 0), 0);
+            imgFrog = new Texture("frog/frog_left.png");
+        }
+    }
+
+    private void goRight(Frog frog, Vector2 currentPosition){
+        if (currentPosition.x < Gdx.graphics.getWidth() - (SIZE_BOX_FROG / 2) - 4) {
+            Sounds.frogJump();
+            frog.b2body.setTransform(currentPosition.add(JUMP_SIZE, 0), 0);
+            imgFrog = new Texture("frog/frog_right.png");
         }
     }
 
@@ -148,9 +163,7 @@ public class Frog extends Sprite implements Disposable {
 
     @Override
     public void dispose() {
-        frogJumpMusic.dispose();
-        frogDieMusic.dispose();
-        frogTargetMusic.dispose();
+        Sounds.dispose();
         stage.dispose();
     }
 

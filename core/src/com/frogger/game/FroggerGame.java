@@ -13,7 +13,6 @@ public class FroggerGame extends Game {
 
 	public static final int screenWidth = 624;
 	public static final int screenHeight = 720;
-
 	public SpriteBatch batch;
 
 	@Override

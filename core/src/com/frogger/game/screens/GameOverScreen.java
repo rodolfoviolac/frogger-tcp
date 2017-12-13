@@ -15,20 +15,18 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.frogger.game.FroggerGame;
 import com.frogger.game.Player;
+import com.frogger.game.Sounds;
 import com.frogger.game.fileHandler.WriteJson;
 
 
 public class GameOverScreen implements Screen {
-    private Viewport viewport;
-    private Stage stage;
 
-    Texture gameOverLogo;
-    Texture backButtonActive;
-    Texture backButtonInactive;
-    BitmapFont scoreFont;
+    private Texture gameOverLogo;
+    private Texture backButtonActive;
+    private Texture backButtonInactive;
+    private BitmapFont scoreFont;
     private int score;
-    FroggerGame game;
-    private Player player;
+    private FroggerGame game;
 
     private static final int gameOverLogoWidth = 300;
     private static final int gameOverLogoHeight = 120;
@@ -37,11 +35,9 @@ public class GameOverScreen implements Screen {
     private static final int backButtonHeight = 70;
     private static final int backButtonY = 50;
 
-    //private Game game;
 
     public GameOverScreen(final FroggerGame game, Player player){
         this.game = game;
-        this.player = player;
 
         gameOverLogo = new Texture("menu-assets/logo-gameOver.png");
         backButtonActive = new Texture("menu-assets/backButton1.png");
@@ -53,12 +49,14 @@ public class GameOverScreen implements Screen {
             @Override
             public boolean touchUp(int screenX, int screenY, int pointer, int button) {
                 if(backButtonIsHover()){
+                    Sounds.menuSound();
                     game.setScreen(new MainMenuScreen(game));
                 }
                 return super.touchUp(screenX, screenY, pointer, button);
             }
         });
 
+        Sounds.menuLoopStop();
         Gdx.input.getTextInput(textListener, "Nome para High Score: ", "Seu nome", "");
     }
 

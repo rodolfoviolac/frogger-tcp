@@ -17,7 +17,7 @@ import com.frogger.game.sprites.Frog;
 
 
 public class MainGameScreen implements Screen {
-    FroggerGame game;
+    private FroggerGame game;
     private OrthographicCamera gamecam;
     private Viewport gamePort;
     private StageGame stageGame;
@@ -50,9 +50,10 @@ public class MainGameScreen implements Screen {
         player = new Player(game.batch);
         currentLevel = 1;
         stageGame = new StageGame(world, game.batch, currentLevel);
-        frog = new Frog(world, 3, game.batch, this);
+        frog = new Frog(world, game.batch, this);
 
         world.setContactListener(new WorldContactListener(frog));
+        Sounds.menuLoopStart();
     }
 
     public void nextStage(){

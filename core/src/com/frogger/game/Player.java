@@ -13,7 +13,6 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 public class Player {
     private Viewport viewport;
     private Stage stage;
-
     private Integer score;
     private Label scoreLabel;
     private Label scoreCountLabel;

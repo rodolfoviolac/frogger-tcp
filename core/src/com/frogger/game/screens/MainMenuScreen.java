@@ -7,6 +7,7 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.frogger.game.FroggerGame;
+import com.frogger.game.Sounds;
 
 public class MainMenuScreen implements Screen {
 
@@ -22,15 +23,14 @@ public class MainMenuScreen implements Screen {
     private static final int scoreButtonY = 210;
     private static final int exitButtonY = 75;
     private static final int froggerLogoY = 500;
-    private static int controlSound = 0;
-    FroggerGame game;
-    Texture exitButtonActive;
-    Texture exitButtonInactive;
-    Texture playButtonActive;
-    Texture playButtonInactive;
-    Texture scoreButtonActive;
-    Texture scoreButtonInactive;
-    Texture froggerLogo;
+    private FroggerGame game;
+    private Texture exitButtonActive;
+    private Texture exitButtonInactive;
+    private Texture playButtonActive;
+    private Texture playButtonInactive;
+    private Texture scoreButtonActive;
+    private Texture scoreButtonInactive;
+    private Texture froggerLogo;
 
 
     public MainMenuScreen(final FroggerGame game) {
@@ -42,17 +42,16 @@ public class MainMenuScreen implements Screen {
         exitButtonActive = new Texture("menu-assets/exitButton1.png");
         exitButtonInactive = new Texture("menu-assets/exitButton2.png");
         froggerLogo = new Texture("menu-assets/logo-frogger.png");
-        final Music music = Gdx.audio.newMusic(Gdx.files.internal("data/sounds/splash2.wav"));
 
 
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
             public boolean touchUp(int screenX, int screenY, int pointer, int button) {
                 if (scoreButtonIsHover()) {
-                    music.play();
+                    Sounds.menuSound();
                     game.setScreen(new HighScoreMenuScreen(game));
                 } else if (playButtonIsHover()) {
-                    music.play();
+                    Sounds.menuSound();
                     game.setScreen(new MainGameScreen(game));
                 }
                 return super.touchUp(screenX, screenY, pointer, button);

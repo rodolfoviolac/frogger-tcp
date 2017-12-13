@@ -11,17 +11,18 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.utils.Align;
 import com.frogger.game.FroggerGame;
+import com.frogger.game.Sounds;
 import com.frogger.game.fileHandler.ReadJson;
 
 
 
 public class HighScoreMenuScreen implements Screen {
 
-    FroggerGame game;
-    BitmapFont scoreFont;
-    Texture backButtonActive;
-    Texture backButtonInactive;
-    Texture froggerLogo;
+    private FroggerGame game;
+    private BitmapFont scoreFont;
+    private Texture backButtonActive;
+    private Texture backButtonInactive;
+    private Texture froggerLogo;
 
     private static final int backButtonWidth = 180;
     private static final int backButtonHeight = 70;
@@ -43,7 +44,6 @@ public class HighScoreMenuScreen implements Screen {
         backButtonActive = new Texture("menu-assets/backButton1.png");
         backButtonInactive = new Texture("menu-assets/backButton2.png");
         froggerLogo = new Texture("menu-assets/highScore-logo.png");
-        final Music music = Gdx.audio.newMusic(Gdx.files.internal("data/sounds/splash2.wav"));
 
         scoreFont = new BitmapFont(Gdx.files.internal("fonts/score.fnt"));
 
@@ -53,7 +53,7 @@ public class HighScoreMenuScreen implements Screen {
 
                 if(backButtonIsHover()){
                     HighScoreMenuScreen.dispose();
-                    music.play();
+                    Sounds.menuSound();
                     game.setScreen(new MainMenuScreen(game));
                 }
 
