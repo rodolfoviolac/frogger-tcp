@@ -11,19 +11,18 @@ import com.frogger.game.Sounds;
 
 public class MainMenuScreen implements Screen {
 
-    private static final int exitButtonWidth = 190;
-    private static final int exitButtonHeight = 90;
-    private static final int playButtonWidth = 190;
-    private static final int playButtonHeight = 90;
-    private static final int scoreButtonWidth = 190;
-    private static final int scoreButtonHeight = 90;
+    private FroggerGame game;
+    
+    private final int menuButtonWidth = 190;
+    private final int menuButtonHeight = 90;
+
     private static final int froggerLogoWidth = 500;
     private static final int froggerLogoHeight = 150;
     private static final int playButtonY = 340;
     private static final int scoreButtonY = 210;
     private static final int exitButtonY = 75;
     private static final int froggerLogoY = 500;
-    private FroggerGame game;
+
     private Texture exitButtonActive;
     private Texture exitButtonInactive;
     private Texture playButtonActive;
@@ -31,6 +30,8 @@ public class MainMenuScreen implements Screen {
     private Texture scoreButtonActive;
     private Texture scoreButtonInactive;
     private Texture froggerLogo;
+
+
 
 
     public MainMenuScreen(final FroggerGame game) {
@@ -62,33 +63,33 @@ public class MainMenuScreen implements Screen {
     }
 
     private boolean exitButtonIsHover() {
-        if (Gdx.input.getX() < exitPositionX() + exitButtonWidth && Gdx.input.getX() > exitPositionX() && FroggerGame.screenHeight - Gdx.input.getY() < exitButtonY + exitButtonHeight && FroggerGame.screenHeight - Gdx.input.getY() > exitButtonY) {
+        if (Gdx.input.getX() < exitPositionX() + menuButtonWidth && Gdx.input.getX() > exitPositionX() && FroggerGame.screenHeight - Gdx.input.getY() < exitButtonY + menuButtonHeight && FroggerGame.screenHeight - Gdx.input.getY() > exitButtonY) {
             return true;
         } else return false;
     }
 
     private boolean scoreButtonIsHover() {
-        if (Gdx.input.getX() < scorePositionX() + scoreButtonWidth && Gdx.input.getX() > scorePositionX() && FroggerGame.screenHeight - Gdx.input.getY() < scoreButtonY + scoreButtonHeight && FroggerGame.screenHeight - Gdx.input.getY() > scoreButtonY) {
+        if (Gdx.input.getX() < scorePositionX() + menuButtonWidth && Gdx.input.getX() > scorePositionX() && FroggerGame.screenHeight - Gdx.input.getY() < scoreButtonY + menuButtonHeight && FroggerGame.screenHeight - Gdx.input.getY() > scoreButtonY) {
             return true;
         } else return false;
     }
 
     private boolean playButtonIsHover() {
-        if (Gdx.input.getX() < playPositionX() + playButtonWidth && Gdx.input.getX() > playPositionX() && FroggerGame.screenHeight - Gdx.input.getY() < playButtonY + playButtonHeight && FroggerGame.screenHeight - Gdx.input.getY() > playButtonY) {
+        if (Gdx.input.getX() < playPositionX() + menuButtonWidth && Gdx.input.getX() > playPositionX() && FroggerGame.screenHeight - Gdx.input.getY() < playButtonY + menuButtonHeight && FroggerGame.screenHeight - Gdx.input.getY() > playButtonY) {
             return true;
         } else return false;
     }
 
     private int exitPositionX() {
-        return (FroggerGame.screenWidth / 2) - exitButtonWidth / 2;
+        return (FroggerGame.screenWidth / 2) - menuButtonWidth / 2;
     }
 
     private int playPositionX() {
-        return (FroggerGame.screenWidth / 2) - playButtonWidth / 2;
+        return (FroggerGame.screenWidth / 2) - menuButtonWidth / 2;
     }
 
     private int scorePositionX() {
-        return (FroggerGame.screenWidth / 2) - scoreButtonWidth / 2;
+        return (FroggerGame.screenWidth / 2) - menuButtonWidth / 2;
     }
 
     private int froggerLogoPositionX() {
@@ -110,24 +111,24 @@ public class MainMenuScreen implements Screen {
         game.batch.draw(froggerLogo, froggerLogoPositionX(), froggerLogoY, froggerLogoWidth, froggerLogoHeight);
 
         if (exitButtonIsHover()) {
-            game.batch.draw(exitButtonActive, exitPositionX(), exitButtonY, exitButtonWidth, exitButtonHeight);
+            game.batch.draw(exitButtonActive, exitPositionX(), exitButtonY, menuButtonWidth, menuButtonHeight);
             if (Gdx.input.isTouched()) {
                 Gdx.app.exit();
             }
         } else {
-            game.batch.draw(exitButtonInactive, exitPositionX(), exitButtonY, exitButtonWidth, exitButtonHeight);
+            game.batch.draw(exitButtonInactive, exitPositionX(), exitButtonY, menuButtonWidth, menuButtonHeight);
         }
 
         if (scoreButtonIsHover()) {
-            game.batch.draw(scoreButtonActive, scorePositionX(), scoreButtonY, scoreButtonWidth, scoreButtonHeight);
+            game.batch.draw(scoreButtonActive, scorePositionX(), scoreButtonY, menuButtonWidth, menuButtonHeight);
         } else {
-            game.batch.draw(scoreButtonInactive, scorePositionX(), scoreButtonY, scoreButtonWidth, scoreButtonHeight);
+            game.batch.draw(scoreButtonInactive, scorePositionX(), scoreButtonY, menuButtonWidth, menuButtonHeight);
         }
 
         if (playButtonIsHover()) {
-            game.batch.draw(playButtonActive, playPositionX(), playButtonY, playButtonWidth, playButtonHeight);
+            game.batch.draw(playButtonActive, playPositionX(), playButtonY, menuButtonWidth, menuButtonHeight);
         } else {
-            game.batch.draw(playButtonInactive, playPositionX(), playButtonY, playButtonWidth, playButtonHeight);
+            game.batch.draw(playButtonInactive, playPositionX(), playButtonY, menuButtonWidth, menuButtonHeight);
         }
 
 
