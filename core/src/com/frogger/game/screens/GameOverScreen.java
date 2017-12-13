@@ -20,31 +20,41 @@ import com.frogger.game.fileHandler.WriteJson;
 
 
 public class GameOverScreen implements Screen {
+    private FroggerGame game;
 
     private Texture gameOverLogo;
     private Texture backButtonActive;
     private Texture backButtonInactive;
     private BitmapFont scoreFont;
-    private int score;
-    private FroggerGame game;
 
-    private static final int gameOverLogoWidth = 300;
-    private static final int gameOverLogoHeight = 120;
-    private static final int gameOverLogoY = 500;
-    private static final int backButtonWidth = 180;
-    private static final int backButtonHeight = 70;
-    private static final int backButtonY = 50;
+    private int score;
+    private final int GAME_OVER_LOGO_Y = 500;
+    private final int BACK_BUTTON_Y = 50;
 
 
     public GameOverScreen(final FroggerGame game, Player player){
         this.game = game;
 
+        defineTextures();
+        defineFont();
+        touchControl();
+
+        Sounds.menuLoopStop();
+        score = player.getScore();
+        Gdx.input.getTextInput(textListener, "Nome para High Score: ", "Seu nome", "");
+    }
+
+    private void defineTextures(){
         gameOverLogo = new Texture("menu-assets/logo-gameOver.png");
         backButtonActive = new Texture("menu-assets/backButton1.png");
         backButtonInactive = new Texture("menu-assets/backButton2.png");
-        scoreFont = new BitmapFont(Gdx.files.internal("fonts/score.fnt"));
-        score = player.getScore();
+    }
 
+    private void defineFont(){
+        scoreFont = new BitmapFont(Gdx.files.internal("fonts/score.fnt"));
+    }
+
+    private void touchControl(){
         Gdx.input.setInputProcessor(new InputAdapter(){
             @Override
             public boolean touchUp(int screenX, int screenY, int pointer, int button) {
@@ -55,23 +65,36 @@ public class GameOverScreen implements Screen {
                 return super.touchUp(screenX, screenY, pointer, button);
             }
         });
-
-        Sounds.menuLoopStop();
-        Gdx.input.getTextInput(textListener, "Nome para High Score: ", "Seu nome", "");
     }
 
     private boolean backButtonIsHover(){
-        if(Gdx.input.getX() < backPositionX() + backButtonWidth && Gdx.input.getX() > backPositionX() && FroggerGame.screenHeight - Gdx.input.getY() < backButtonY + backButtonHeight && FroggerGame.screenHeight - Gdx.input.getY() > backButtonY){
+        if(Gdx.input.getX() < backPositionX() + backButtonActive.getWidth() && Gdx.input.getX() > backPositionX() && Gdx.graphics.getHeight() - Gdx.input.getY() < BACK_BUTTON_Y + backButtonActive.getHeight() && Gdx.graphics.getHeight() - Gdx.input.getY() > BACK_BUTTON_Y){
             return true;
         } else return false;
     }
 
     private int backPositionX(){
-        return (FroggerGame.screenWidth / 2) - backButtonWidth / 2;
+        return (Gdx.graphics.getWidth() / 2) - backButtonActive.getWidth() / 2;
     }
 
     private int gameOverLogoPositionX(){
-        return (FroggerGame.screenWidth / 2) - gameOverLogoWidth / 2;
+        return (Gdx.graphics.getWidth() / 2) - gameOverLogo.getWidth() / 2;
+    }
+
+    private void backButtonDraw(){
+        if(backButtonIsHover()){
+            game.batch.draw(backButtonActive, backPositionX(), BACK_BUTTON_Y);
+        } else {
+            game.batch.draw(backButtonInactive, backPositionX(), BACK_BUTTON_Y);
+        }
+    }
+
+    private void printScore(){
+        GlyphLayout seuScoreText = new GlyphLayout(scoreFont,  " Your Score: ", Color.WHITE, 0, Align.left, false);
+        scoreFont.draw(game.batch, seuScoreText, Gdx.graphics.getWidth() / 2 - 190, 450);
+
+        GlyphLayout scoreNumberText = new GlyphLayout(scoreFont,  String.valueOf(score), Color.WHITE, 0, Align.left, false);
+        scoreFont.draw(game.batch, scoreNumberText, Gdx.graphics.getWidth() / 2 - 50, 350);
     }
 
     @Override
@@ -81,25 +104,11 @@ public class GameOverScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         game.batch.begin();
-
-        if(backButtonIsHover()){
-            game.batch.draw(backButtonActive, backPositionX(), backButtonY, backButtonWidth, backButtonHeight);
-        } else {
-            game.batch.draw(backButtonInactive, backPositionX(), backButtonY, backButtonWidth, backButtonHeight);
-        }
-
-        game.batch.draw(gameOverLogo, gameOverLogoPositionX(), gameOverLogoY, gameOverLogoWidth , gameOverLogoHeight);
-
-
-        GlyphLayout seuScoreText = new GlyphLayout(scoreFont,  " Seu Score: ", Color.WHITE, 0, Align.left, false);
-        scoreFont.draw(game.batch, seuScoreText, FroggerGame.screenWidth / 2 - 190, 450);
-
-        GlyphLayout scoreNumberText = new GlyphLayout(scoreFont,  String.valueOf(score), Color.WHITE, 0, Align.left, false);
-        scoreFont.draw(game.batch, scoreNumberText, FroggerGame.screenWidth / 2 - 50, 350);
-
+        game.batch.draw(gameOverLogo, gameOverLogoPositionX(), GAME_OVER_LOGO_Y);
+        backButtonDraw();
+        printScore();
         game.batch.end();
     }
 
@@ -111,10 +120,8 @@ public class GameOverScreen implements Screen {
     Input.TextInputListener textListener = new Input.TextInputListener()
     {
         @Override
-        public void input(String input)
-        {
+        public void input(String input) {
             System.out.println(input);
-
             WriteJson.addPlayerToDB(input,score);
         }
 
